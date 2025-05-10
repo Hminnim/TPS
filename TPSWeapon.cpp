@@ -50,10 +50,9 @@ void ATPSWeapon::Fire(TWeakObjectPtr<UCameraComponent> camera)
 	auto Camera = camera.Get();
 
 	FireStart = Camera->GetComponentLocation() + Camera->GetForwardVector() * 150;
-	FireEnd = (Camera->GetForwardVector() * 2000) + FireStart;
+	FireEnd = (Camera->GetForwardVector() * 10000) + FireStart;
 	FHitResult HitResult;
 
-	DrawDebugLine(GetWorld(), FireStart, FireEnd, FColor::Red, false, 5.0f);
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, FireStart, FireEnd, ECollisionChannel::ECC_Visibility))
 	{
 		if (HitResult.GetActor())

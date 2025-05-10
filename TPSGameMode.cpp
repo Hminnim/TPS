@@ -3,6 +3,7 @@
 
 #include "TPSGameMode.h"
 #include "TPSUserWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 void ATPSGameMode::BeginPlay()
 {
@@ -14,6 +15,12 @@ void ATPSGameMode::BeginPlay()
 		{
 			GameWidget->AddToViewport();
 			GameWidget->ShowCrosshair(false);
+			APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+			if (PC)
+			{
+				PC->SetShowMouseCursor(false);
+				PC->SetInputMode(FInputModeGameOnly());
+			}
 		}
 	}
 }
