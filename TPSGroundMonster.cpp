@@ -26,12 +26,13 @@ void ATPSGroundMonster::DestroyMonster()
 		}
 	}
 	isDead = true;
-
+	
+	Super::DestroyMonster();
 
 	GetWorld()->GetTimerManager().SetTimer(
 		DeathTimer,  
 		FTimerDelegate::CreateLambda([&]() {
-			Super::DestroyMonster();
+			this->Destroy();
 		}),
 		0.67f,                             
 		false                        

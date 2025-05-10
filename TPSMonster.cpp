@@ -2,6 +2,9 @@
 
 
 #include "TPSMonster.h"
+#include "TPSGameMode.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include <Perception/AISense_Damage.h>
 
 // Sets default values
@@ -38,7 +41,17 @@ void ATPSMonster::UpdateHealthPoint(float amount)
 
 void ATPSMonster::DestroyMonster()
 {
-	this->Destroy();
+	// Update Score
+	ATPSGameMode* GM = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
+	if (GM)
+	{
+		GM->UpdateScore(1);
+	}
+
+	// Change Collision
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetCollisionResponseToAllChannels(ECR_Ignore);
+
 }
 
 void ATPSMonster::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)

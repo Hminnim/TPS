@@ -20,4 +20,6 @@ public:
 	void SetAmmoText(int32 CurrentAmmo, int32 MaxAmmo);
 	UFUNCTION(BlueprintImplementableEvent)
 	void ShowCrosshair(bool isShow);
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetScoreText(int32 CurrentScore);
 };

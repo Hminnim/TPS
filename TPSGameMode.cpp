@@ -7,6 +7,16 @@
 
 void ATPSGameMode::BeginPlay()
 {
+	SetWidget();
+}
+
+void ATPSGameMode::UpdateAmmoText()
+{
+	GameWidget->SetAmmoText(CurrentAmmo, MaxAmmo);
+}
+
+void ATPSGameMode::SetWidget()
+{
 	if (GameWidgetClass)
 	{
 		GameWidget = Cast<UTPSUserWidget>(CreateWidget(GetWorld(), GameWidgetClass));
@@ -25,11 +35,6 @@ void ATPSGameMode::BeginPlay()
 	}
 }
 
-void ATPSGameMode::UpdateAmmoText()
-{
-	GameWidget->SetAmmoText(CurrentAmmo, MaxAmmo);
-}
-
 void ATPSGameMode::SetAmmo(int32 currentAmmo, int32 maxAmmo)
 {
 	CurrentAmmo = currentAmmo;
@@ -46,4 +51,10 @@ void ATPSGameMode::UpdateAmmo(int32 AmmoChange)
 void ATPSGameMode::UpdateCrosshair(bool isShow)
 {
 	GameWidget->ShowCrosshair(isShow);
+}
+
+void ATPSGameMode::UpdateScore(int32 scoreChange)
+{
+	CurrentScore += scoreChange;
+	GameWidget->SetScoreText(CurrentScore);
 }
