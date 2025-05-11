@@ -4,6 +4,7 @@
 #include "TPSGameMode.h"
 #include "TPSUserWidget.h"
 #include "TPSMonsterSpawner.h"
+#include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 
 void ATPSGameMode::BeginPlay()
@@ -12,6 +13,7 @@ void ATPSGameMode::BeginPlay()
 
 	SetWidget();
 	StartMonsterSpawn();
+	StartTImer();
 }
 
 void ATPSGameMode::UpdateAmmoText()
@@ -61,6 +63,27 @@ void ATPSGameMode::UpdateScore(int32 scoreChange)
 {
 	CurrentScore += scoreChange;
 	GameWidget->SetScoreText(CurrentScore);
+}
+
+void ATPSGameMode::UpdateTimer()
+{
+	GameWidget->SetTimerText(CurrentTime);
+	CurrentTime--;
+}
+
+void ATPSGameMode::StartTImer()
+{
+	CurrentTime = 120;
+
+	GetWorld()->GetTimerManager().SetTimer
+	(
+		timerHandle,
+		this,
+		&ATPSGameMode::UpdateTimer,
+		1.0f,
+		true,
+		0.0f
+	);
 }
 
 void ATPSGameMode::StartMonsterSpawn()

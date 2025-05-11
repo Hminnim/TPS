@@ -22,4 +22,6 @@ public:
 	void ShowCrosshair(bool isShow);
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetScoreText(int32 CurrentScore);
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetTimerText(int32 CurrentTime);
 };
