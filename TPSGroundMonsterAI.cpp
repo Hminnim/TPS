@@ -22,6 +22,9 @@ ATPSGroundMonsterAI::ATPSGroundMonsterAI()
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightConfig"));
 	SightConfig->SightRadius = 800.0f;
 	SightConfig->LoseSightRadius = 1000.0f;
+	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
+	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
+	SightConfig->DetectionByAffiliation.bDetectFriendlies = false;
 
 	AIPerception->ConfigureSense(*SightConfig);
 	AIPerception->SetDominantSense(SightConfig->GetSenseImplementation());
@@ -38,6 +41,7 @@ ATPSGroundMonsterAI::ATPSGroundMonsterAI()
 void ATPSGroundMonsterAI::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+	SetGenericTeamId(FGenericTeamId(1));
 
 	UBlackboardComponent* bbComponent = Blackboard.Get();
 	if (UseBlackboard(BB_Monster, bbComponent))
