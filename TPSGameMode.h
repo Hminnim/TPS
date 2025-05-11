@@ -7,6 +7,7 @@
 #include "TPSGameMode.generated.h"
 
 class UTPSUserWidget;
+class ATPSMonsterSpawner;
 /**
  * 
  */
@@ -30,11 +31,18 @@ protected:
 	int32 CurrentScore = 0;
 	int32 CurrentTime = 0;
 
+	// Widget //
 	UPROPERTY(EditAnywhere, Category = "Widget")
 	TSubclassOf<class UUserWidget> GameWidgetClass;
 
 	UPROPERTY()
 	UTPSUserWidget* GameWidget;
+
+	// Monster Spawner //
+	UPROPERTY(EditAnywhere, Category = "Monster Spawner")
+	TSubclassOf<class ATPSMonsterSpawner> MonsterSpawnerClass;
+	ATPSMonsterSpawner* MonsterSpawner;
+	void StartMonsterSpawn();
 
 	virtual void BeginPlay() override;
 	void UpdateAmmoText();

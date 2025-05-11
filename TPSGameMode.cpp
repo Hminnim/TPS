@@ -3,11 +3,15 @@
 
 #include "TPSGameMode.h"
 #include "TPSUserWidget.h"
+#include "TPSMonsterSpawner.h"
 #include "Kismet/GameplayStatics.h"
 
 void ATPSGameMode::BeginPlay()
 {
+	Super::BeginPlay();
+
 	SetWidget();
+	StartMonsterSpawn();
 }
 
 void ATPSGameMode::UpdateAmmoText()
@@ -57,4 +61,17 @@ void ATPSGameMode::UpdateScore(int32 scoreChange)
 {
 	CurrentScore += scoreChange;
 	GameWidget->SetScoreText(CurrentScore);
+}
+
+void ATPSGameMode::StartMonsterSpawn()
+{
+	if (MonsterSpawnerClass)
+	{
+		MonsterSpawner = GetWorld()->SpawnActor<ATPSMonsterSpawner>(MonsterSpawnerClass);
+
+		if (MonsterSpawner)
+		{
+			MonsterSpawner->StartSpawning();
+		}
+	}
 }
