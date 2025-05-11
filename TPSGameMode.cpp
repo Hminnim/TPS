@@ -68,7 +68,14 @@ void ATPSGameMode::UpdateScore(int32 scoreChange)
 void ATPSGameMode::UpdateTimer()
 {
 	GameWidget->SetTimerText(CurrentTime);
-	CurrentTime--;
+	if (CurrentTime <= 0)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(timerHandle);
+	}
+	else
+	{
+		CurrentTime--;
+	}
 }
 
 void ATPSGameMode::StartTImer()
