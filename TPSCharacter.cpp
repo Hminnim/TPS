@@ -236,4 +236,8 @@ bool ATPSCharacter::GetReload()
 void ATPSCharacter::UpdateHealthPoint(float amount)
 {
 	CurrentHealthPoint += amount;
+	if (CurrentHealthPoint <= 0)
+	{
+		GameMode->GameOver();
+	}
 }

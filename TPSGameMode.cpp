@@ -3,6 +3,7 @@
 
 #include "TPSGameMode.h"
 #include "TPSUserWidget.h"
+#include "TPSGameOverWidget.h"
 #include "TPSMonsterSpawner.h"
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -29,7 +30,7 @@ void ATPSGameMode::SetWidget()
 
 		if (GameWidget)
 		{
-			GameWidget->AddToViewport();
+			GameWidget->AddToViewport(0);
 			GameWidget->ShowCrosshair(false);
 			APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 			if (PC)
@@ -71,6 +72,7 @@ void ATPSGameMode::UpdateTimer()
 	if (CurrentTime <= 0)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(timerHandle);
+		GameOver();
 	}
 	else
 	{
@@ -104,4 +106,24 @@ void ATPSGameMode::StartMonsterSpawn()
 			MonsterSpawner->StartSpawning();
 		}
 	}
+}
+
+void ATPSGameMode::GameOver()
+{
+	if (GameoverWidgetClass)
+	{
+		GameoverWidget = Cast<UTPSGameOverWidget>(CreateWidget(GetWorld(), GameoverWidgetClass));
+		if (GameoverWidget)
+		{
+			GameoverWidget->AddToViewport(10);
+			APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+			if (PC)
+			{
+				PC->SetShowMouseCursor(true);
+				PC->SetInputMode(FInputModeUIOnly());
+			}
+		}
+	}
+	GetWorldSettings()->SetTimeDilation(0.f);
+	
 }

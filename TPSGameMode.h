@@ -7,6 +7,7 @@
 #include "TPSGameMode.generated.h"
 
 class UTPSUserWidget;
+class UTPSGameOverWidget;
 class ATPSMonsterSpawner;
 /**
  * 
@@ -25,6 +26,7 @@ public:
 	void UpdateScore(int32 scoreChange);
 	void UpdateTimer();
 	void StartTImer();
+	void GameOver();
 
 protected:
 	int32 CurrentAmmo = 0;
@@ -39,6 +41,10 @@ protected:
 	TSubclassOf<class UUserWidget> GameWidgetClass;
 	UPROPERTY()
 	UTPSUserWidget* GameWidget;
+	UPROPERTY(EditAnywhere, Category = "Widget")
+	TSubclassOf<class UTPSGameOverWidget> GameoverWidgetClass;
+	UPROPERTY()
+	UTPSGameOverWidget* GameoverWidget;
 
 	// Monster Spawner //
 	UPROPERTY(EditAnywhere, Category = "Monster Spawner")
