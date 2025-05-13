@@ -16,12 +16,20 @@ class TPS_API UTPSUserWidget : public UUserWidget
 	
 public:
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void SetAmmoText(int32 CurrentAmmo, int32 MaxAmmo);
-	UFUNCTION(BlueprintImplementableEvent)
+	void SetAmmoText(int32 currentAmmo, int32 maxAmmo);
 	void ShowCrosshair(bool isShow);
-	UFUNCTION(BlueprintImplementableEvent)
 	void SetScoreText(int32 CurrentScore);
-	UFUNCTION(BlueprintImplementableEvent)
 	void SetTimerText(int32 CurrentTime);
+
+protected:
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* Score;
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* CurrentAmmo;
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* MaxAmmo;
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* Timer;
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Crosshair;
 };

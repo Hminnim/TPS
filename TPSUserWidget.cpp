@@ -2,4 +2,33 @@
 
 
 #include "TPSUserWidget.h"
+#include "Components/TextBlock.h"
+#include "Components/Image.h"
 
+void UTPSUserWidget::SetAmmoText(int32 currentAmmo, int32 maxAmmo)
+{
+	CurrentAmmo->SetText(FText::AsNumber(currentAmmo));
+	MaxAmmo->SetText(FText::AsNumber(maxAmmo));
+}
+
+void UTPSUserWidget::ShowCrosshair(bool isShow)
+{
+	if (isShow)
+	{
+		Crosshair->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		Crosshair->SetVisibility(ESlateVisibility::Hidden);
+	}
+}
+
+void UTPSUserWidget::SetScoreText(int32 CurrentScore)
+{
+	Score->SetText(FText::AsNumber(CurrentScore));
+}
+
+void UTPSUserWidget::SetTimerText(int32 CurrentTime)
+{
+	Timer->SetText(FText::AsNumber(CurrentTime));
+}
