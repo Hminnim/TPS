@@ -98,32 +98,32 @@ void ATPSGameMode::StartTImer()
 
 void ATPSGameMode::StartMonsterSpawn()
 {
-	if (MonsterSpawnerClass)
+	if (MonsterSpawnerClass && MonsterSpawner == nullptr)
 	{
 		MonsterSpawner = GetWorld()->SpawnActor<ATPSMonsterSpawner>(MonsterSpawnerClass);
-
-		if (MonsterSpawner)
-		{
-			MonsterSpawner->StartSpawning();
-		}
+	}
+	if (MonsterSpawner)
+	{
+		MonsterSpawner->StartSpawning();
 	}
 }
 
 void ATPSGameMode::GameOver()
 {
-	if (GameoverWidgetClass)
+	if (GameoverWidgetClass && GameoverWidget == nullptr)
 	{
 		GameoverWidget = Cast<UTPSGameOverWidget>(CreateWidget(GetWorld(), GameoverWidgetClass));
-		if (GameoverWidget)
-		{
-			GameoverWidget->AddToViewport(10);
-			APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-			if (PC)
-			{
-				PC->SetShowMouseCursor(true);
-				PC->SetInputMode(FInputModeUIOnly());
-			}
-		}
+	}
+	if (GameoverWidget)
+	{
+		GameoverWidget->AddToViewport(10);
+
+	}
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PC)
+	{
+		PC->SetShowMouseCursor(true);
+		PC->SetInputMode(FInputModeUIOnly());
 	}
 	GetWorldSettings()->SetTimeDilation(0.f);
 	
@@ -131,19 +131,20 @@ void ATPSGameMode::GameOver()
 
 void ATPSGameMode::GamePause()
 {
-	if (PauseWidgetClass)
+	if (PauseWidgetClass && PauseWidget == nullptr)
 	{
 		PauseWidget = Cast<UTPS_PauseWidget>(CreateWidget(GetWorld(), PauseWidgetClass));
-		if (PauseWidget)
-		{
-			PauseWidget->AddToViewport(11);
-			APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-			if (PC)
-			{
-				PC->SetShowMouseCursor(true);
-				PC->SetInputMode(FInputModeUIOnly());
-			} 
-		}
+	}
+	if (PauseWidget)
+	{
+		PauseWidget->AddToViewport(11);
+	}
+
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PC)
+	{
+		PC->SetShowMouseCursor(true);
+		PC->SetInputMode(FInputModeUIOnly());
 	}
 	GetWorldSettings()->SetTimeDilation(0.f);
 }
@@ -152,13 +153,13 @@ void ATPSGameMode::GameResume()
 {
 	if (PauseWidget)
 	{
-		PauseWidget->RemoveFromViewport();
-		APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-		if (PC)
-		{
-			PC->SetShowMouseCursor(false);
-			PC->SetInputMode(FInputModeGameOnly());
-		}
+		PauseWidget->RemoveFromParent();
 	}
-	
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PC)
+	{
+		PC->SetShowMouseCursor(false);
+		PC->SetInputMode(FInputModeGameOnly());
+	}
+	GetWorldSettings()->SetTimeDilation(1.f);
 }
