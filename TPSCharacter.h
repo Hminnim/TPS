@@ -98,6 +98,8 @@ private:
 	UInputAction* ShootAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"));
 	UInputAction* ReloadtAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"));
+	UInputAction* PauseAction;
 
 	// FUNCTION //
 	void Move(const FInputActionValue& Value);
@@ -108,6 +110,7 @@ private:
 	void Shoot(const FInputActionValue& Value);
 	void EquipWeapon();
 	void Reload();
+	void GamePause();
 	UFUNCTION()
 	void OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 };

@@ -5,6 +5,7 @@
 #include "TPSUserWidget.h"
 #include "TPSGameOverWidget.h"
 #include "TPSMonsterSpawner.h"
+#include "TPS_PauseWidget.h"
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -125,5 +126,39 @@ void ATPSGameMode::GameOver()
 		}
 	}
 	GetWorldSettings()->SetTimeDilation(0.f);
+	
+}
+
+void ATPSGameMode::GamePause()
+{
+	if (PauseWidgetClass)
+	{
+		PauseWidget = Cast<UTPS_PauseWidget>(CreateWidget(GetWorld(), PauseWidgetClass));
+		if (PauseWidget)
+		{
+			PauseWidget->AddToViewport(11);
+			APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+			if (PC)
+			{
+				PC->SetShowMouseCursor(true);
+				PC->SetInputMode(FInputModeUIOnly());
+			} 
+		}
+	}
+	GetWorldSettings()->SetTimeDilation(0.f);
+}
+
+void ATPSGameMode::GameResume()
+{
+	if (PauseWidget)
+	{
+		PauseWidget->RemoveFromViewport();
+		APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+		if (PC)
+		{
+			PC->SetShowMouseCursor(false);
+			PC->SetInputMode(FInputModeGameOnly());
+		}
+	}
 	
 }

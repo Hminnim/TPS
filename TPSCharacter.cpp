@@ -80,6 +80,7 @@ void ATPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Triggered, this, &ATPSCharacter::Aim);
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Triggered, this, &ATPSCharacter::Shoot);
 		EnhancedInputComponent->BindAction(ReloadtAction, ETriggerEvent::Triggered, this, &ATPSCharacter::Reload);
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Triggered, this, &ATPSCharacter::GamePause);
 	}
 }
 
@@ -211,6 +212,11 @@ void ATPSCharacter::Reload()
 		CurWeapon->Reload();
 		isReload = false;
 		}), CurWeapon->ReloadTime, false);
+}
+
+void ATPSCharacter::GamePause()
+{
+	GameMode->GamePause();
 }
 
 void ATPSCharacter::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
