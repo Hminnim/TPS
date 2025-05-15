@@ -28,6 +28,11 @@ bool UTPS_PauseWidget::Initialize()
 
 void UTPS_PauseWidget::OnOptionButtonClicked()
 {
+	ATPSGameMode* GM = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
+	if (GM)
+	{
+		GM->OpenOption();
+	}
 }
 
 void UTPS_PauseWidget::OnTitleButtonClicked()

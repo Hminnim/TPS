@@ -24,8 +24,11 @@ protected:
 	class UComboBoxString* ResolutionComboBox;
 	UPROPERTY(meta = (BindWidget))
 	class USlider* VolumeSlider;
+	UPROPERTY(meta = (BindWidget))
+	class UButton* BackButton;
 
-	void OnFullscreenCheckChanged(bool isChecked);
-	void SetResolution();
-	void SetMasterVolume(float Volume);
+	void OnFullscreenCheckChanged(bool bIsChecked);
+	void OnResolutionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+	void OnMasterVolumeChanged(float Value);
+	void OnBackButtonClicked();
 };

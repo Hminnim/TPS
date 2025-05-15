@@ -9,6 +9,7 @@
 class UTPSUserWidget;
 class UTPSGameOverWidget;
 class UTPS_PauseWidget;
+class UTPSOptionWidget;
 class ATPSMonsterSpawner;
 /**
  * 
@@ -30,6 +31,8 @@ public:
 	void GameOver();
 	void GamePause();
 	void GameResume();
+	void OpenOption();
+	void CloseOption();
 
 protected:
 	int32 CurrentAmmo = 0;
@@ -52,6 +55,9 @@ protected:
 	TSubclassOf<class UTPS_PauseWidget> PauseWidgetClass;
 	UPROPERTY()
 	UTPS_PauseWidget* PauseWidget;
+	UPROPERTY(EditAnywhere, Category = "Widget")
+	TSubclassOf<class UTPSOptionWidget> OptionWidgetClass;
+	UTPSOptionWidget* OptionWidget;
 
 	// Monster Spawner //
 	UPROPERTY(EditAnywhere, Category = "Monster Spawner")

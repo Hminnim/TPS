@@ -6,6 +6,7 @@
 #include "TPSGameOverWidget.h"
 #include "TPSMonsterSpawner.h"
 #include "TPS_PauseWidget.h"
+#include "TPSOptionWidget.h"
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -162,4 +163,25 @@ void ATPSGameMode::GameResume()
 		PC->SetInputMode(FInputModeGameOnly());
 	}
 	GetWorldSettings()->SetTimeDilation(1.f);
+}
+
+void ATPSGameMode::OpenOption()
+{
+	if (OptionWidgetClass && OptionWidget == nullptr)
+	{
+		OptionWidget = Cast<UTPSOptionWidget>(CreateWidget(GetWorld(), OptionWidgetClass));
+	}
+	if (OptionWidget)
+	{
+		OptionWidget->AddToViewport(12);
+	}
+}
+
+void ATPSGameMode::CloseOption()
+{
+	if (OptionWidget)
+	{
+		OptionWidget->RemoveFromParent();
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Close")));
+	}
 }
