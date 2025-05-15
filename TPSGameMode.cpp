@@ -174,6 +174,7 @@ void ATPSGameMode::OpenOption()
 	if (OptionWidget)
 	{
 		OptionWidget->AddToViewport(12);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("OptionWidget Added"));
 	}
 }
 
