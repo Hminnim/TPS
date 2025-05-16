@@ -42,6 +42,7 @@ void ATPSCharacter::BeginPlay()
 	GameMode = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
 	EquipWeapon();
 	OnTakeAnyDamage.AddDynamic(this, &ATPSCharacter::OnTakeDamage);
+	GameMode->SetHealthBar(MaxHealthPoint, CurrentHealthPoint);
 }
 
 void ATPSCharacter::NotifyControllerChanged()
@@ -222,6 +223,7 @@ void ATPSCharacter::GamePause()
 void ATPSCharacter::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	ATPSCharacter::UpdateHealthPoint(-Damage);
+	GameMode->SetHealthBar(MaxHealthPoint, CurrentHealthPoint);
 }
 
 bool ATPSCharacter::GetAim()

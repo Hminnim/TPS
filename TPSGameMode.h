@@ -33,6 +33,7 @@ public:
 	void GameResume();
 	void OpenOption();
 	void CloseOption();
+	void SetHealthBar(float MaxHealth, float CurrentHealth);
 
 protected:
 	int32 CurrentAmmo = 0;

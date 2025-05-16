@@ -186,3 +186,8 @@ void ATPSGameMode::CloseOption()
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Close")));
 	}
 }
+
+void ATPSGameMode::SetHealthBar(float MaxHealth, float CurrentHealth)
+{
+	GameWidget->SetHealthBar(MaxHealth, CurrentHealth);
+}

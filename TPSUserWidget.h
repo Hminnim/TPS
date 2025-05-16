@@ -20,6 +20,7 @@ public:
 	void ShowCrosshair(bool isShow);
 	void SetScoreText(int32 CurrentScore);
 	void SetTimerText(int32 CurrentTime);
+	void SetHealthBar(float MaxHealth, float CurrentHealth);
 
 protected:
 	UPROPERTY(meta = (BindWidget))
@@ -32,4 +33,6 @@ protected:
 	class UTextBlock* Timer;
 	UPROPERTY(meta = (BindWidget))
 	class UImage* Crosshair;
+	UPROPERTY(meta = (BindWidget))
+	class UProgressBar* HealthBar;
 };

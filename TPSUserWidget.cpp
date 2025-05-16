@@ -4,6 +4,7 @@
 #include "TPSUserWidget.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
+#include "Components/ProgressBar.h"
 
 void UTPSUserWidget::SetAmmoText(int32 currentAmmo, int32 maxAmmo)
 {
@@ -31,4 +32,10 @@ void UTPSUserWidget::SetScoreText(int32 CurrentScore)
 void UTPSUserWidget::SetTimerText(int32 CurrentTime)
 {
 	Timer->SetText(FText::AsNumber(CurrentTime));
+}
+
+void UTPSUserWidget::SetHealthBar(float MaxHealth, float CurrentHealth)
+{
+	float percent = CurrentHealth / MaxHealth;
+	HealthBar->SetPercent(percent);
 }
