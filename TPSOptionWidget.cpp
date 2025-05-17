@@ -48,11 +48,14 @@ void UTPSOptionWidget::OnFullscreenCheckChanged(bool bIsChecked)
 	if (UGameUserSettings* Settings = GEngine->GetGameUserSettings())
 	{
 		Settings->SetFullscreenMode(bIsChecked ? EWindowMode::Fullscreen : EWindowMode::Windowed);
+		Settings->ApplySettings(false);
 	}
 }
 
 void UTPSOptionWidget::OnResolutionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
+	TArray<FString> resolution;
+	
 }
 
 void UTPSOptionWidget::OnMasterVolumeChanged(float Value)

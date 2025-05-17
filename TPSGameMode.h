@@ -39,7 +39,7 @@ protected:
 	int32 CurrentAmmo = 0;
 	int32 MaxAmmo = 0;
 	int32 CurrentScore = 0;
-	int32 CurrentTime = 0;
+	int32 CurrentTime = 120;
 
 	virtual void BeginPlay() override;
 
