@@ -25,6 +25,7 @@ bool UTPSOptionWidget::Initialize()
 		FIntPoint Resolution = Settings->GetScreenResolution();
 		FString CurrentResolution = FString::Printf(TEXT("%dx%d"), Resolution.X, Resolution.Y);
 
+		ResolutionComboBox->AddOption(TEXT("960x540"));
 		ResolutionComboBox->AddOption(TEXT("1280x720"));
 		ResolutionComboBox->AddOption(TEXT("1920x1080"));
 		ResolutionComboBox->AddOption(TEXT("2560x1440"));
@@ -54,8 +55,20 @@ void UTPSOptionWidget::OnFullscreenCheckChanged(bool bIsChecked)
 
 void UTPSOptionWidget::OnResolutionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
-	TArray<FString> resolution;
-	
+	TArray<FString> Split;
+	SelectedItem.ParseIntoArray(Split, TEXT("x"));
+
+	if (UGameUserSettings* Settings = GEngine->GetGameUserSettings())
+	{
+		FIntPoint NewResoltuion = { FCString::Atoi(*Split[0]), FCString::Atoi(*Split[1])};
+		Settings->SetScreenResolution(NewResoltuion);
+		Settings->ApplySettings(false);
+
+		if (Settings->GetFullscreenMode() == EWindowMode::Windowed)
+		{
+			GEngine->GameViewport->GetWindow()->Resize(NewResoltuion);
+		}
+	}
 }
 
 void UTPSOptionWidget::OnMasterVolumeChanged(float Value)
