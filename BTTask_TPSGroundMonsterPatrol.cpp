@@ -37,8 +37,6 @@ EBTNodeResult::Type UBTTask_TPSGroundMonsterPatrol::ExecuteTask(UBehaviorTreeCom
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolPosition"), PatrolPosition);
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Patrol")));
-
 		return EBTNodeResult::Succeeded;
 	}
 

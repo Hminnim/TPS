@@ -2,6 +2,9 @@
 
 
 #include "TPSSkyMonster.h"
+#include "TimerManager.h"
+#include <Kismet/GameplayStatics.h>
+#include "TPSSkyMonsterAI.h"
 
 ATPSSkyMonster::ATPSSkyMonster()
 {
@@ -15,4 +18,16 @@ void ATPSSkyMonster::ShootMisile(FVector targetPosition)
 
 void ATPSSkyMonster::DestroyMonster()
 {
+	if (AAIController* AIController = Cast<AAIController>(GetController()))
+	{
+		if (ATPSSkyMonsterAI* MonsterAI = Cast<ATPSSkyMonsterAI>(AIController))
+		{
+			MonsterAI->StopAI();
+		}
+	}
+	isDead = true;
+
+	Super::DestroyMonster();
+
+	this->Destroy();
 }
