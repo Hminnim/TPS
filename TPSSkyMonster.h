@@ -23,4 +23,8 @@ public:
 	// FUNCTION //
 	void ShootMisile(FVector targetPosition);
 	virtual void DestroyMonster() override;
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	TSubclassOf<class ATPSMonsterProjectile> ProjectileClass;
 };
