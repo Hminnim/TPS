@@ -19,8 +19,17 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Projectile")
 	USphereComponent* CollisionComponent;
 	
+	UPROPERTY(VisibleAnywhere, Category = "Projectile")
+	UStaticMeshComponent* ProjectileMeshComponent;
+
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	UProjectileMovementComponent* ProjectileMovementComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Movement")
+	UMaterialInstanceDynamic* ProjectileMaterialInstance;
+
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	void FireInDirection(const FVector& ShootDirection);
 };

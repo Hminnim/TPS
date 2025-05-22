@@ -17,22 +17,31 @@ void ATPSSkyMonster::ShootMisile(FVector targetPosition)
 {
 	if (ProjectileClass)
 	{
-		FName SocketName = FName("Voletir_BCanonEndSocket");
+		FName SocketName = FName(TEXT("Voletir_BCanonEndSocket"));
 
 		if (GetMesh()->DoesSocketExist(SocketName))
 		{
 			FVector SocketLocation = GetMesh()->GetSocketLocation(SocketName);
+			FVector Direction = (targetPosition - SocketLocation).GetSafeNormal();
+			FRotator FireRotation = Direction.Rotation();
 
 			if (UWorld* World = GetWorld())
 			{
 				FActorSpawnParameters SpawnParams;
 				SpawnParams.Owner = this;
 				SpawnParams.Instigator = GetInstigator();
+				SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-				ATPSMonsterProjectile* Projectile = World->SpawnActor<ATPSMonsterProjectile>(ProjectileClass,SocketLocation,FRotator::ZeroRotator,SpawnParams);
+
+				ATPSMonsterProjectile* Projectile = World->SpawnActor<ATPSMonsterProjectile>(
+					ProjectileClass,
+					SocketLocation,
+					FireRotation,
+					SpawnParams
+				);
 				if (Projectile)
 				{
-					Projectile->FireInDirection(targetPosition);
+					Projectile->FireInDirection(Direction);
 				}
 			}
 		}
