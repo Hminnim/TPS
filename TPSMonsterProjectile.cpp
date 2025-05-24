@@ -2,6 +2,7 @@
 
 
 #include "TPSMonsterProjectile.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ATPSMonsterProjectile::ATPSMonsterProjectile()
@@ -53,11 +54,50 @@ ATPSMonsterProjectile::ATPSMonsterProjectile()
 		ProjectileMeshComponent->SetRelativeScale3D(FVector(0.09f, 0.09f, 0.09f));
 		ProjectileMeshComponent->SetupAttachment(RootComponent);
 	}
+
+	if (!ExplosionEffect)
+	{
+		static ConstructorHelpers::FObjectFinder<UParticleSystem>Effect(TEXT("'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Big_A.P_Explosion_Big_A'"));
+		if (Effect.Succeeded())
+		{
+			ExplosionEffect = Effect.Object;
+		}
+	}
 }
 
 void ATPSMonsterProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Mostner Projectile OnHit")));
+	UGameplayStatics::SpawnEmitterAtLocation(
+		GetWorld(),
+		ExplosionEffect,
+		Hit.ImpactPoint,
+		Hit.ImpactPoint.Rotation()
+	);
+
+	DrawDebugSphere(
+		GetWorld(),
+		Hit.ImpactPoint,
+		ExplosionRadius,
+		16,
+		FColor::Red,
+		false,
+		2.0f,
+		0,
+		2.0f
+	);
+
+	UGameplayStatics::ApplyRadialDamage(
+		GetWorld(),
+		ExplosionDamage,
+		GetActorLocation(),
+		ExplosionRadius,
+		UDamageType::StaticClass(),
+		TArray<AActor*>(),
+		this,
+		GetInstigatorController(),
+		true
+	);
+
 	Destroy();
 }
 

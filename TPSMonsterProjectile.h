@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "Particles/ParticleSystem.h"
 #include "TPSMonsterProjectile.generated.h"
 
 UCLASS()
@@ -28,8 +29,15 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	UMaterialInstanceDynamic* ProjectileMaterialInstance;
 
+	UPROPERTY(VisibleAnywhere, Category = "Effect")
+	UParticleSystem* ExplosionEffect;
+
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	void FireInDirection(const FVector& ShootDirection);
+
+protected:
+	float ExplosionRadius = 150.0f;
+	float ExplosionDamage = 10.0f;
 };

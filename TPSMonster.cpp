@@ -56,6 +56,8 @@ void ATPSMonster::DestroyMonster()
 
 void ATPSMonster::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
+	if (!InstigatedBy->IsPlayerController()) return;
+
 	UAISense_Damage::ReportDamageEvent
 	(
 		GetWorld(),
