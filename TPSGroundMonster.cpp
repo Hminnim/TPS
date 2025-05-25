@@ -9,6 +9,8 @@
 ATPSGroundMonster::ATPSGroundMonster()
 {
 	AttackRange = 300.0f;
+	MaxHealthPoint = 150.0f;
+	HealthPoint = 150.0f;
 }
 
 void ATPSGroundMonster::MeleeAttack(AActor* target)

@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "TPSMonster.generated.h"
 
+class UWidgetComponent;
+class UTPSHealthBar;
+
 UCLASS()
 class TPS_API ATPSMonster : public ACharacter
 {
@@ -19,6 +22,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Monster Value")
 	float HealthPoint = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Monster Value")
+	float MaxHealthPoint = 100.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Monster Value")
 	float AttackDamage = 10.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Monster Value")
 	float AttackRange = 300.0f;
@@ -28,6 +33,10 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere, Category = "Health Bar")
+	UWidgetComponent* HealthBar;
+	UTPSHealthBar* HealthBarWidget;
 
 public:	
 	// Called every frame

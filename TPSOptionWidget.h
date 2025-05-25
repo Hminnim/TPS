@@ -24,7 +24,7 @@ protected:
 	class UComboBoxString* ResolutionComboBox;
 	UPROPERTY(meta = (BindWidget))
 	class USlider* VolumeSlider;
-	UPROPERTY(meta=(BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	class UButton* BackButton;
 
 	UFUNCTION()

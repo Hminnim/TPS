@@ -11,6 +11,8 @@
 ATPSSkyMonster::ATPSSkyMonster()
 {
 	AttackRange = 500.0f;
+	MaxHealthPoint = 80.0f;
+	HealthPoint = 80.0f;
 }
 
 void ATPSSkyMonster::ShootMisile(FVector targetPosition)

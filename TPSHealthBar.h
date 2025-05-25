@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/ProgressBar.h"
 #include "TPSHealthBar.generated.h"
 
 /**
@@ -15,6 +16,8 @@ class TPS_API UTPSHealthBar : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Own Character", meta = (AllowPrivateAccess = "true"));
-	TObjectPtr<class ATPSCharacter> ownCharacter;
+	UPROPERTY(meta = (BindWidget))
+	class UProgressBar* HealthPointBar;
+
+	void SetHPBar(float curHP, float maxHP);
 };

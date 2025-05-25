@@ -74,18 +74,6 @@ void ATPSMonsterProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Oth
 		Hit.ImpactPoint.Rotation()
 	);
 
-	DrawDebugSphere(
-		GetWorld(),
-		Hit.ImpactPoint,
-		ExplosionRadius,
-		16,
-		FColor::Red,
-		false,
-		2.0f,
-		0,
-		2.0f
-	);
-
 	UGameplayStatics::ApplyRadialDamage(
 		GetWorld(),
 		ExplosionDamage,
