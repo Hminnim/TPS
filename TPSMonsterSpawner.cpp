@@ -10,12 +10,12 @@
 ATPSMonsterSpawner::ATPSMonsterSpawner()
 {
 	monstersCount = 0;
-	spawnPeriod = 10.0f;
+	spawnPeriod = 5.0f;
 }
 
 void ATPSMonsterSpawner::StartSpawning()
 {
-	GetWorld()->GetTimerManager().SetTimer(spawnTimerHandle, this, &ATPSMonsterSpawner::SpawnMonster, spawnPeriod, true, 10.0f);
+	GetWorld()->GetTimerManager().SetTimer(spawnTimerHandle, this, &ATPSMonsterSpawner::SpawnMonster, spawnPeriod, true, 5.0f);
 }
 
 void ATPSMonsterSpawner::StopSpawning()
@@ -31,8 +31,10 @@ void ATPSMonsterSpawner::SpawnMonster()
 	FNavLocation Randomlocation;
 	NavSystem->GetRandomPoint(Randomlocation);
 
-	if (MonsterClass == nullptr) return;
-	if (GetWorld()->SpawnActor<ATPSMonster>(MonsterClass, Randomlocation.Location, FRotator::ZeroRotator))
+	int32 randomMonster = FMath::RandRange(0, MonsterClasses.Num() - 1);
+
+	if (MonsterClasses[randomMonster] == nullptr) return;
+	if (GetWorld()->SpawnActor<ATPSMonster>(MonsterClasses[randomMonster], Randomlocation.Location, FRotator::ZeroRotator))
 	{
 		monstersCount++;
 	}

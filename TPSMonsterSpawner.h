@@ -29,9 +29,9 @@ protected:
 	void SpawnMonster();
 
 	// Monsters //
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monsters")
-	TSubclassOf<ATPSMonster> MonsterClass;
 	ATPSMonster* Monster;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monsters")
+	TArray<TSubclassOf<ATPSMonster>> MonsterClasses;
 
 	// VALUES //
 	FTimerHandle spawnTimerHandle;
