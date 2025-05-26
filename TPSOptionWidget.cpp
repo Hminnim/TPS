@@ -6,6 +6,7 @@
 #include "Components/ComboBoxString.h"
 #include "Components/Slider.h"
 #include "Components/Button.h"
+#include "Sound/SoundClass.h"
 #include "TPSGameMode.h"
 #include "GameFramework/GameUserSettings.h"
 
@@ -34,6 +35,10 @@ bool UTPSOptionWidget::Initialize()
 	}
 	if (VolumeSlider)
 	{
+		if (MasterSoundClass)
+		{
+			VolumeSlider->SetValue(MasterSoundClass->Properties.Volume);
+		}
 		VolumeSlider->OnValueChanged.AddDynamic(this, &UTPSOptionWidget::OnMasterVolumeChanged);
 	}
 	if (BackButton)
@@ -73,6 +78,10 @@ void UTPSOptionWidget::OnResolutionChanged(FString SelectedItem, ESelectInfo::Ty
 
 void UTPSOptionWidget::OnMasterVolumeChanged(float Value)
 {
+	if (MasterSoundClass)
+	{
+		MasterSoundClass->Properties.Volume = Value;
+	}
 }
 
 void UTPSOptionWidget::OnBackButtonClicked()

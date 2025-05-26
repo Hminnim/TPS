@@ -17,6 +17,9 @@ class TPS_API UTPSOptionWidget : public UUserWidget
 public:
 	virtual bool Initialize() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Class")
+	class USoundClass* MasterSoundClass;
+
 protected:
 	UPROPERTY(meta = (BindWidget))
 	class UCheckBox* FullscreenCheckBox;
