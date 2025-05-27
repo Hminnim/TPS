@@ -6,6 +6,8 @@
 #include "TPSMonster.h"
 #include "TPSGroundMonster.generated.h"
 
+class USoundBase;
+
 /**
  * 
  */
@@ -24,6 +26,10 @@ public:
 	// FUNCTION //
 	void MeleeAttack(AActor* target);
 	virtual void DestroyMonster() override;
+
+	// Sounds //
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Sounds")
+	USoundBase* AttackSound;
 
 protected:
 };

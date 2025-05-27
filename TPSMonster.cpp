@@ -8,6 +8,7 @@
 #include "Components/WidgetComponent.h"
 #include "TPSHealthBar.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include <Perception/AISense_Damage.h>
 
 // Sets default values
@@ -92,6 +93,11 @@ void ATPSMonster::DestroyMonster()
 void ATPSMonster::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	if (!InstigatedBy->IsPlayerController()) return;
+
+	if (HitSound)
+	{
+		UGameplayStatics::PlaySound2D(this, HitSound);
+	}
 
 	UAISense_Damage::ReportDamageEvent
 	(

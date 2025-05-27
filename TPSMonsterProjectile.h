@@ -9,6 +9,8 @@
 #include "Particles/ParticleSystem.h"
 #include "TPSMonsterProjectile.generated.h"
 
+class USoundBase;
+
 UCLASS()
 class TPS_API ATPSMonsterProjectile : public AActor
 {
@@ -31,6 +33,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Effect")
 	UParticleSystem* ExplosionEffect;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explosion Sounds")
+	USoundBase* ExplosionSound;
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

@@ -86,6 +86,11 @@ void ATPSMonsterProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Oth
 		true
 	);
 
+	if (ExplosionSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ExplosionSound, GetActorLocation());
+	}
+
 	Destroy();
 }
 

@@ -8,6 +8,7 @@
 
 class UWidgetComponent;
 class UTPSHealthBar;
+class USoundBase;
 
 UCLASS()
 class TPS_API ATPSMonster : public ACharacter
@@ -29,6 +30,10 @@ public:
 	float AttackRange = 300.0f;
 
 	bool isDead = false;
+
+	// Sounds //
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Sounds")
+	USoundBase* HitSound;
 
 protected:
 	// Called when the game starts or when spawned

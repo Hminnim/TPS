@@ -16,6 +16,10 @@ ATPSGroundMonster::ATPSGroundMonster()
 void ATPSGroundMonster::MeleeAttack(AActor* target)
 {
 	UGameplayStatics::ApplyDamage(target, AttackDamage,this->GetController(),this, UDamageType::StaticClass());
+	if (AttackSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, AttackSound, GetActorLocation());
+	}
 }
 
 void ATPSGroundMonster::DestroyMonster()
