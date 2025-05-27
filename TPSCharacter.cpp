@@ -64,8 +64,11 @@ void ATPSCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	if (isDeath) return;
+
 	SetAimCamera(DeltaSeconds);
 	HandleFootstep(DeltaSeconds);
+	HandleFallingDeath(DeltaSeconds);
 }
 
 // Called to bind functionality to input
@@ -251,6 +254,23 @@ void ATPSCharacter::HandleFootstep(float DeltaSeconds)
 	
 }
 
+void ATPSCharacter::HandleFallingDeath(float DeltaSeconds)
+{
+	if (!GetCharacterMovement()->IsFalling())
+	{
+		FallingTimer = 0.0f;
+		return;
+	}
+
+	float FallingDeathTime = 5.0f;
+
+	FallingTimer += DeltaSeconds;
+	if (FallingTimer >= FallingDeathTime)
+	{
+		UpdateHealthPoint(-100.0f);
+	}
+}
+
 void ATPSCharacter::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	ATPSCharacter::UpdateHealthPoint(-Damage);
@@ -277,6 +297,7 @@ void ATPSCharacter::UpdateHealthPoint(float amount)
 	CurrentHealthPoint += amount;
 	if (CurrentHealthPoint <= 0)
 	{
+		isDeath = true;
 		GameMode->GameOver();
 	}
 }

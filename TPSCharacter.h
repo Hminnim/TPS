@@ -69,6 +69,7 @@ protected:
 	bool isAim = false;
 	bool isShoot = false;
 	bool isReload = false;
+	bool isDeath = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Aim Setting")
 	float DefaultSpringArmLength = 200.0f;
@@ -81,6 +82,7 @@ protected:
 
 	FTimerHandle ReloadTimer;
 	float FootstepTimer = 0.0f;
+	float FallingTimer = 0.0f;
 
 private:
 
@@ -121,6 +123,7 @@ private:
 	void Reload();
 	void GamePause();
 	void HandleFootstep(float DeltaSeconds);
+	void HandleFallingDeath(float DeltaSeconds);
 	UFUNCTION()
 	void OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 };
