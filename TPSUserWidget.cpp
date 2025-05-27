@@ -8,8 +8,8 @@
 
 void UTPSUserWidget::SetAmmoText(int32 currentAmmo, int32 maxAmmo)
 {
-	CurrentAmmo->SetText(FText::AsNumber(currentAmmo));
-	MaxAmmo->SetText(FText::AsNumber(maxAmmo));
+	FString AmmoText = FString::Printf(TEXT("%d / %d"), currentAmmo, maxAmmo);
+	Ammo->SetText(FText::FromString(AmmoText));
 }
 
 void UTPSUserWidget::ShowCrosshair(bool isShow)

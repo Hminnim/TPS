@@ -26,9 +26,7 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Score;
 	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* CurrentAmmo;
-	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* MaxAmmo;
+	class UTextBlock* Ammo;
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Timer;
 	UPROPERTY(meta = (BindWidget))
