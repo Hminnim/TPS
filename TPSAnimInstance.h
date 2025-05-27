@@ -41,5 +41,5 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	float AimYaw;
 	UPROPERTY(BlueprintReadWrite)
-	float AimPitch;
+	float AimPitch;;
 };

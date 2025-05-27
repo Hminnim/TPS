@@ -14,6 +14,8 @@ class UInputAction;
 class USkeletalMeshComponent;
 class ATPSWeapon;
 class ATPSGameMode;
+class USoundBase;
+
 
 UCLASS()
 class TPS_API ATPSCharacter : public ACharacter
@@ -34,6 +36,12 @@ public:
 	float MaxHealthPoint = 100.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "HealthPoint")
 	float CurrentHealthPoint = 100.0f;
+
+	// Sounds //
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Sounds")
+	USoundBase* walkSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Sounds")
+	USoundBase* reloadSound;
 
 	// GET VALUE //
 	bool GetAim();
@@ -72,6 +80,7 @@ protected:
 	FVector AimCameraLocation = { 0.0f,40.0f,20.0f };
 
 	FTimerHandle ReloadTimer;
+	float FootstepTimer = 0.0f;
 
 private:
 
@@ -111,6 +120,7 @@ private:
 	void EquipWeapon();
 	void Reload();
 	void GamePause();
+	void HandleFootstep(float DeltaSeconds);
 	UFUNCTION()
 	void OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 };

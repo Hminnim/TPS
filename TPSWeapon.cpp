@@ -57,7 +57,6 @@ void ATPSWeapon::Fire(TWeakObjectPtr<UCameraComponent> camera)
 	{
 		if (HitResult.GetActor())
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("HitResult : %s"),*(HitResult.GetActor()->GetName())));
 			Attack(HitResult.GetActor());
 			if (ATPSMonster* HitMonster = Cast<ATPSMonster>(HitResult.GetActor()))
 			{

@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include <EnhancedInputSubsystems.h>
 #include <EnhancedInputComponent.h>
+#include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
 #include "TPSWeapon.h"
 #include "TPSGameMode.h"
@@ -64,6 +65,7 @@ void ATPSCharacter::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	SetAimCamera(DeltaSeconds);
+	HandleFootstep(DeltaSeconds);
 }
 
 // Called to bind functionality to input
@@ -212,12 +214,41 @@ void ATPSCharacter::Reload()
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimer, FTimerDelegate::CreateLambda([&]() {
 		CurWeapon->Reload();
 		isReload = false;
+		if (reloadSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, reloadSound, GetActorLocation());
+		}
 		}), CurWeapon->ReloadTime, false);
 }
 
 void ATPSCharacter::GamePause()
 {
 	GameMode->GamePause();
+}
+
+void ATPSCharacter::HandleFootstep(float DeltaSeconds)
+{
+	if (!walkSound) return;
+	if (GetCharacterMovement()->IsFalling()) return;
+	if (!GetCharacterMovement()->IsMovingOnGround()) return;
+
+	float CharacterSpeed = GetVelocity().Size2D();
+	float FootstepInterval = CharacterSpeed >= 1000.0f ? 0.25f : 0.5f;
+
+	FootstepTimer += DeltaSeconds;
+	if (CharacterSpeed > 0.0f)
+	{
+		if (FootstepTimer > FootstepInterval)
+		{
+			FootstepTimer = 0.0f;
+			UGameplayStatics::PlaySoundAtLocation(this, walkSound, GetActorLocation());
+		}
+	}
+	else
+	{
+		FootstepTimer = 0.0f;
+	}
+	
 }
 
 void ATPSCharacter::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
