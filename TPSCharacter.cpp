@@ -18,16 +18,16 @@ ATPSCharacter::ATPSCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	// Set Default
+	// Set default character movement
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 
-	// Create Components
+	// Create components
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 
-	// Set Default Camera
+	// Sets default camera
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->TargetArmLength = DefaultSpringArmLength;
 	SpringArm->bUsePawnControlRotation = true;
@@ -41,9 +41,11 @@ void ATPSCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	GameMode = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
-	EquipWeapon();
-	OnTakeAnyDamage.AddDynamic(this, &ATPSCharacter::OnTakeDamage);
 	GameMode->SetHealthBar(MaxHealthPoint, CurrentHealthPoint);
+	
+	EquipWeapon();
+	
+	OnTakeAnyDamage.AddDynamic(this, &ATPSCharacter::OnTakeDamage);
 }
 
 void ATPSCharacter::NotifyControllerChanged()
@@ -64,7 +66,10 @@ void ATPSCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (isDeath) return;
+	if (bIsDeath)
+	{
+		return;
+	}
 
 	SetAimCamera(DeltaSeconds);
 	HandleFootstep(DeltaSeconds);
@@ -76,7 +81,7 @@ void ATPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	// Binding Input
+	// Binding Action Input
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATPSCharacter::Move);
@@ -106,13 +111,20 @@ void ATPSCharacter::Move(const FInputActionValue& Value)
 
 void ATPSCharacter::Sprint(const FInputActionValue& Value)
 {
-	if (isAim || isReload) return;
+	if (bIsAim || bIsReload)
+	{
+		return;
+	}
 
-	isSprint = Value.Get<bool>();
-	if (isSprint)
+	bIsSprint = Value.Get<bool>();
+	if (bIsSprint)
+	{
 		GetCharacterMovement()->MaxWalkSpeed = 1200.0f;
+	}
 	else
+	{
 		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+	}
 }
 
 void ATPSCharacter::Look(const FInputActionValue& Value)
@@ -125,18 +137,24 @@ void ATPSCharacter::Look(const FInputActionValue& Value)
 
 void ATPSCharacter::Aim(const FInputActionValue& Value)
 {
-	isAim = Value.Get<bool>();
+	bIsAim = Value.Get<bool>();
 
-	if (isAim) GetCharacterMovement()->MaxWalkSpeed = 600.0f;
-	if (!isAim) CurWeapon->StopFire();
+	if (bIsAim)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+	}
+	if (!bIsAim)
+	{
+		CurrentWeapon->StopFire();
+	}
 
-	GetCharacterMovement()->bOrientRotationToMovement = !isAim;
-	GameMode->UpdateCrosshair(isAim);
+	GetCharacterMovement()->bOrientRotationToMovement = !bIsAim;
+	GameMode->UpdateCrosshair(bIsAim);
 }
 
 void ATPSCharacter::SetAimCamera(float DeltaSeconds)
 {
-	if (isAim)
+	if (bIsAim)
 	{
 		FRotator CurrentRotation = GetActorRotation();
 		FRotator TargetRotation = GetControlRotation();
@@ -156,7 +174,7 @@ void ATPSCharacter::SetAimCamera(float DeltaSeconds)
 		FVector NewLocation = FMath::Lerp(AimCameraLocation, DefaultCameraLocation, 0.1f);
 		Camera->SetRelativeLocation(NewLocation);
 	}
-	else if (!isAim)
+	else if (!bIsAim)
 	{
 		float ZoomSpeed = 10.0f;
 
@@ -167,61 +185,81 @@ void ATPSCharacter::SetAimCamera(float DeltaSeconds)
 		Camera->SetRelativeLocation(NewLocation);
 	}
 
-	if (CurWeapon->CurrentAmmo <= 0) isShoot = false;
+	if (CurrentWeapon->CurrentAmmo <= 0)
+	{
+		bIsShoot = false;
+	}
 }
 
 void ATPSCharacter::Shoot(const FInputActionValue& Value)
 {
-	if (!isAim) return;
-	if (isReload) return;
-
-	isShoot = Value.Get<bool>();
-	if (isShoot)
+	if (!bIsAim || bIsReload)
 	{
-		CurWeapon->StartFire(Camera);
+		return;
+	}
+
+	bIsShoot = Value.Get<bool>();
+	if (bIsShoot)
+	{
+		CurrentWeapon->StartFire(Camera);
 	}
 	else
 	{
-		CurWeapon->StopFire();
+		CurrentWeapon->StopFire();
 	}
 }
 
 void ATPSCharacter::EquipWeapon()
 {
 	FName WeaponSocket(TEXT("hand_rSocket"));
-	CurWeapon = GetWorld()->SpawnActor<ATPSWeapon>(Weapon, FVector::ZeroVector, FRotator::ZeroRotator);
-	if (nullptr != CurWeapon) {
-		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, WeaponSocket);
+	CurrentWeapon = GetWorld()->SpawnActor<ATPSWeapon>(Weapon, FVector::ZeroVector, FRotator::ZeroRotator);
+	if (nullptr != CurrentWeapon) {
+		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, WeaponSocket);
 		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 		{
-			CurWeapon->SetController(PlayerController);
+			CurrentWeapon->SetController(PlayerController);
 		}
 		
 		if (GameMode)
 		{
-			GameMode->SetAmmo(CurWeapon->CurrentAmmo, CurWeapon->MaxAmmo);
+			GameMode->SetAmmo(CurrentWeapon->CurrentAmmo, CurrentWeapon->MaxAmmo);
 		}
 	}
 }
 
 void ATPSCharacter::Reload()
 {
-	if (GetCharacterMovement()->IsFalling()) return;
-	if (isReload) return;
+	if (GetCharacterMovement()->IsFalling())
+	{
+		return;
+	}
+	if (bIsReload)
+	{
+		return;
+	}
 
-	CurWeapon->StopFire();
-	isShoot = false;
-	isReload = true;
+	CurrentWeapon->StopFire();
+	bIsShoot = false;
+	bIsReload = true;
 	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 
-	GetWorld()->GetTimerManager().SetTimer(ReloadTimer, FTimerDelegate::CreateLambda([&]() {
-		CurWeapon->Reload();
-		isReload = false;
-		if (reloadSound)
-		{
-			UGameplayStatics::PlaySoundAtLocation(this, reloadSound, GetActorLocation());
-		}
-		}), CurWeapon->ReloadTime, false);
+	GetWorld()->GetTimerManager().SetTimer
+	(
+		ReloadTimer, 
+		FTimerDelegate::CreateLambda
+		([&]() 
+			{
+				CurrentWeapon->Reload();
+				bIsReload = false;
+				if (ReloadSound)
+				{
+				UGameplayStatics::PlaySoundAtLocation(this, ReloadSound, GetActorLocation());
+				}
+			}
+		), 
+		CurrentWeapon->ReloadTime,
+		false
+	);
 }
 
 void ATPSCharacter::GamePause()
@@ -231,9 +269,14 @@ void ATPSCharacter::GamePause()
 
 void ATPSCharacter::HandleFootstep(float DeltaSeconds)
 {
-	if (!walkSound) return;
-	if (GetCharacterMovement()->IsFalling()) return;
-	if (!GetCharacterMovement()->IsMovingOnGround()) return;
+	if (!WalkSound)
+	{
+		return;
+	}
+	if (GetCharacterMovement()->IsFalling() || !GetCharacterMovement()->IsMovingOnGround())
+	{
+		return;
+	}
 
 	float CharacterSpeed = GetVelocity().Size2D();
 	float FootstepInterval = CharacterSpeed >= 1000.0f ? 0.25f : 0.5f;
@@ -244,7 +287,7 @@ void ATPSCharacter::HandleFootstep(float DeltaSeconds)
 		if (FootstepTimer > FootstepInterval)
 		{
 			FootstepTimer = 0.0f;
-			UGameplayStatics::PlaySoundAtLocation(this, walkSound, GetActorLocation());
+			UGameplayStatics::PlaySoundAtLocation(this, WalkSound, GetActorLocation());
 		}
 	}
 	else
@@ -277,27 +320,27 @@ void ATPSCharacter::OnTakeDamage(AActor* DamagedActor, float Damage, const UDama
 	GameMode->SetHealthBar(MaxHealthPoint, CurrentHealthPoint);
 }
 
-bool ATPSCharacter::GetAim()
+bool ATPSCharacter::IsAiming() const
 {
-	return isAim;
+	return bIsAim;
 }
 
-bool ATPSCharacter::GetShoot()
+bool ATPSCharacter::IsShooting() const
 {
-	return isShoot;
+	return bIsShoot;
 }
 
-bool ATPSCharacter::GetReload()
+bool ATPSCharacter::IsRealoading() const
 {
-	return isReload;
+	return bIsReload;
 }
 
-void ATPSCharacter::UpdateHealthPoint(float amount)
+void ATPSCharacter::UpdateHealthPoint(float Amount)
 {
-	CurrentHealthPoint += amount;
+	CurrentHealthPoint += Amount;
 	if (CurrentHealthPoint <= 0)
 	{
-		isDeath = true;
+		bIsDeath = true;
 		GameMode->GameOver();
 	}
 }

@@ -34,8 +34,8 @@ void UTPSAnimInstance::NativeUpdateAnimation(float DeltaSecond)
 
 	speed = Character->GetVelocity().Size2D();
 	isFalling = Character->GetCharacterMovement()->IsFalling();
-	isAim = Character->GetAim();
-	isShoot = Character->GetShoot();
-	isReload = Character->GetReload();
+	isAim = Character->IsAiming();
+	isShoot = Character->IsShooting();
+	isReload = Character->IsRealoading();
 	direction = CalculateDirection(Character->GetVelocity(), Character->GetActorRotation());
 }
