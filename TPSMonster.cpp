@@ -42,12 +42,13 @@ void ATPSMonster::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	OnTakeAnyDamage.AddDynamic(this, &ATPSMonster::OnTakeDamage);
 	HealthBarWidget = Cast<UTPSHealthBar>(HealthBar->GetUserWidgetObject());
 	if(HealthBarWidget)
 	{
 		HealthBarWidget->SetHPBar(HealthPoint, MaxHealthPoint);
 	}
+
+	OnTakeAnyDamage.AddDynamic(this, &ATPSMonster::OnTakeDamage);
 }
 
 // Called every frame
@@ -64,41 +65,47 @@ void ATPSMonster::Tick(float DeltaTime)
 	}
 }
 
-void ATPSMonster::UpdateHealthPoint(float amount)
-{
-	HealthPoint += amount;
-	if (HealthBarWidget)
-	{
-		HealthBarWidget->SetHPBar(HealthPoint, MaxHealthPoint);
-	}
-	if (HealthPoint <= 0.0f) DestroyMonster();
-
-}
-
 void ATPSMonster::DestroyMonster()
 {
-	// Update Score
+	// Update score
 	ATPSGameMode* GM = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
 	if (GM)
 	{
 		GM->UpdateScore(1);
 	}
 
-	// Change Collision
+	// Change collision
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionResponseToAllChannels(ECR_Ignore);
-
 }
 
 void ATPSMonster::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	if (!InstigatedBy->IsPlayerController()) return;
+	// Only take damage by the player
+	if (!InstigatedBy->IsPlayerController())
+	{
+		return;
+	}
 
+	HealthPoint -= Damage;
+
+	// Update healthbar widget
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetHPBar(HealthPoint, MaxHealthPoint);
+	}
+	if (HealthPoint <= 0.0f)
+	{
+		DestroyMonster();
+	}
+
+	// Play hit sound
 	if (HitSound)
 	{
 		UGameplayStatics::PlaySound2D(this, HitSound);
 	}
 
+	// Report damage event for the AI perception
 	UAISense_Damage::ReportDamageEvent
 	(
 		GetWorld(),

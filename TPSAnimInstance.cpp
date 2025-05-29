@@ -16,14 +16,16 @@ void UTPSAnimInstance::NativeBeginPlay()
 	{
 		Character = Cast<ATPSCharacter>(Pawn);
 	}
-
 }
 
 void UTPSAnimInstance::NativeUpdateAnimation(float DeltaSecond)
 {
 	Super::NativeUpdateAnimation(DeltaSecond);
 
-	if (Character == nullptr) return;
+	if (Character == nullptr)
+	{
+		return;
+	}
 
 	FRotator ControlRotation = Character->GetControlRotation();
 	FRotator ActorRotation = Character->GetActorRotation();
@@ -32,10 +34,10 @@ void UTPSAnimInstance::NativeUpdateAnimation(float DeltaSecond)
 	AimYaw = DeltaRotation.Yaw;
 	AimPitch = DeltaRotation.Pitch;
 
-	speed = Character->GetVelocity().Size2D();
-	isFalling = Character->GetCharacterMovement()->IsFalling();
-	isAim = Character->IsAiming();
-	isShoot = Character->IsShooting();
-	isReload = Character->IsRealoading();
-	direction = CalculateDirection(Character->GetVelocity(), Character->GetActorRotation());
+	CharacterSpeed = Character->GetVelocity().Size2D();
+	bIsFalling = Character->GetCharacterMovement()->IsFalling();
+	bIsAim = Character->IsAiming();
+	bIsShoot = Character->IsShooting();
+	bIsReload = Character->IsRealoading();
+	CharacterDirection = CalculateDirection(Character->GetVelocity(), Character->GetActorRotation());
 }

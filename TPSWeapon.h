@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Camera/CameraComponent.h"
 #include "TPSWeapon.generated.h"
 
 class UCameraComponent;
@@ -19,31 +20,25 @@ public:
 	ATPSWeapon();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
+	// Values for fire handle
 	FTimerHandle TimerHandle;
 	float LastFireTime = -1.0f;
 	FVector FireStart;
 	FVector FireEnd;
 	FVector FireDirection;
 
-	// Player Component
-	APlayerController* PlayerController;
-
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Weapon Value
+	// Weapon value
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	float FireRate;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
-	bool isAuto = true;
+	bool bIsAuto = true;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	USkeletalMeshComponent* WeaponMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	float CurrentAmmo = 30.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
+	float AttackRange = 10000.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	float MaxAmmo = 30.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
@@ -57,12 +52,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	USoundBase* FireSound;
 
-	void SetController(APlayerController* CharacterController);
+	// Player Component
+	APlayerController* PlayerController;
+	UCameraComponent* PlayerCamera;
+	void SetPlayerComponent(APlayerController* CharacterController, UCameraComponent* CharacterCamera);
 
 	// Weapon Function
-	void Fire(TWeakObjectPtr<UCameraComponent> camera);
-	void Attack(AActor* TargetMonster);
-	void StartFire(TWeakObjectPtr<UCameraComponent> camera);
+	void Fire();
+	void StartFire();
 	void StopFire();
 	void Reload();
 	void ApplyRecoil();

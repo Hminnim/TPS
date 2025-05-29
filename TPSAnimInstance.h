@@ -21,23 +21,23 @@ protected:
 	ATPSCharacter* Character;
 
 public:
-	// FUNCTION //
+	// Function
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSecond) override;
 
-	// VALUES //
+	// Character state values
 	UPROPERTY(BlueprintReadWrite)
-	bool isAim;
+	bool bIsAim;
 	UPROPERTY(BlueprintReadWrite)
-	bool isShoot;
+	bool bIsShoot;
 	UPROPERTY(BlueprintReadWrite)
-	bool isFalling;
+	bool bIsFalling;
 	UPROPERTY(BlueprintReadWrite)
-	bool isReload;
+	bool bIsReload;
 	UPROPERTY(BlueprintReadWrite)
-	float speed;
+	float CharacterSpeed;
 	UPROPERTY(BlueprintReadWrite)
-	float direction;
+	float CharacterDirection;
 	UPROPERTY(BlueprintReadWrite)
 	float AimYaw;
 	UPROPERTY(BlueprintReadWrite)

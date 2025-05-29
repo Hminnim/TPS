@@ -28,7 +28,6 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	UProjectileMovementComponent* ProjectileMovementComponent;
 
-	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	UMaterialInstanceDynamic* ProjectileMaterialInstance;
 
 	UPROPERTY(VisibleAnywhere, Category = "Effect")

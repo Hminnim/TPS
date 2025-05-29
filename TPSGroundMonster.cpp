@@ -31,7 +31,7 @@ void ATPSGroundMonster::DestroyMonster()
 			MonsterAI->StopAI();
 		}
 	}
-	isDead = true;
+	bIsDead = true;
 	
 	Super::DestroyMonster();
 

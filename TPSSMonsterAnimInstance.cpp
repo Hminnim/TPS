@@ -21,5 +21,5 @@ void UTPSSMonsterAnimInstance::NativeUpdateAnimation(float DeltaSecond)
 	if (Monster == nullptr) return;
 
 	speed = Monster->GetVelocity().Size2D();
-	isDead = Monster->isDead;
+	isDead = Monster->bIsDead;
 }

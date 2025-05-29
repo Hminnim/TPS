@@ -3,7 +3,6 @@
 
 #include "TPSWeapon.h"
 #include "TimerManager.h"
-#include "Camera/CameraComponent.h"
 #include "TPSGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "TPSMonster.h"
@@ -11,35 +10,19 @@
 // Sets default values
 ATPSWeapon::ATPSWeapon()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	// Set WeaponMesh default values
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
 	RootComponent = WeaponMesh;
 	WeaponMesh->SetCollisionProfileName("NoCollision");
-
-	
 }
 
-// Called when the game starts or when spawned
-void ATPSWeapon::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-// Called every frame
-void ATPSWeapon::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-void ATPSWeapon::SetController(APlayerController* CharacterController)
+void ATPSWeapon::SetPlayerComponent(APlayerController* CharacterController, UCameraComponent* CharacterCamera)
 {
 	PlayerController = CharacterController;
+	PlayerCamera = CharacterCamera;
 }
 
-void ATPSWeapon::Fire(TWeakObjectPtr<UCameraComponent> camera)
+void ATPSWeapon::Fire()
 {
 	if (CurrentAmmo <= 0)
 	{
@@ -47,52 +30,47 @@ void ATPSWeapon::Fire(TWeakObjectPtr<UCameraComponent> camera)
 		return;
 	}
 
-	auto Camera = camera.Get();
+	// Line trace
+	FireStart = PlayerCamera->GetComponentLocation() + PlayerCamera->GetForwardVector() * 150;
+	FireEnd = (PlayerCamera->GetForwardVector() * AttackRange) + FireStart;
 
-	FireStart = Camera->GetComponentLocation() + Camera->GetForwardVector() * 150;
-	FireEnd = (Camera->GetForwardVector() * 10000) + FireStart;
 	FHitResult HitResult;
-
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, FireStart, FireEnd, ECollisionChannel::ECC_Visibility))
 	{
 		if (HitResult.GetActor())
 		{
-			Attack(HitResult.GetActor());
-			if (ATPSMonster* HitMonster = Cast<ATPSMonster>(HitResult.GetActor()))
-			{
-				HitMonster->UpdateHealthPoint(-Damage);
-			}
+			UGameplayStatics::ApplyDamage(HitResult.GetActor(), Damage, PlayerController, this, UDamageType::StaticClass());
 		}
 	}
 
 	ApplyRecoil();
+
+	// Update widget ammo text
 	CurrentAmmo--;
 	ATPSGameMode* GameMode = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
 	if (GameMode)
 	{
 		GameMode->UpdateAmmo(CurrentAmmo);
 	}
+	// Play fire sound
 	if (FireSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 	}
 }
 
-void ATPSWeapon::Attack(AActor* TargetMonster)
+void ATPSWeapon::StartFire()
 {
-	UGameplayStatics::ApplyDamage(TargetMonster, Damage, PlayerController, this, UDamageType::StaticClass());
-}
-
-void ATPSWeapon::StartFire(TWeakObjectPtr<UCameraComponent> camera)
-{
+	// Fire rate
 	float CurrentTime = GetWorld()->GetTimeSeconds();
+	if (CurrentTime - LastFireTime < FireRate)
+	{
+		return;
+	}
 
-	if (CurrentTime - LastFireTime < FireRate) return;
-
-	Fire(camera);
+	// If this weapon is auto, repeat fire function
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATPSWeapon::Fire, FireRate, bIsAuto, 0.0f);
 	LastFireTime = CurrentTime;
-	if(isAuto)
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [camera, this]() {Fire(camera); }, FireRate, true);
 }
 
 void ATPSWeapon::StopFire()
@@ -103,6 +81,8 @@ void ATPSWeapon::StopFire()
 void ATPSWeapon::Reload()
 {
 	CurrentAmmo = MaxAmmo;
+
+	// Update widget ammo text
 	ATPSGameMode* GameMode = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
 	if (GameMode)
 	{
@@ -110,6 +90,7 @@ void ATPSWeapon::Reload()
 	}
 }
 
+// Apply recoil by moving camera randomly
 void ATPSWeapon::ApplyRecoil()
 {
 	float YawRecoil = FMath::RandRange(-YawRecoilAmount, YawRecoilAmount);

@@ -29,27 +29,26 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Monster Value")
 	float AttackRange = 300.0f;
 
-	bool isDead = false;
+	bool bIsDead = false;
 
 	// Sounds //
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Sounds")
 	USoundBase* HitSound;
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	UPROPERTY(VisibleAnywhere, Category = "Health Bar")
-	UWidgetComponent* HealthBar;
-	UTPSHealthBar* HealthBarWidget;
-
-public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Function
-	void UpdateHealthPoint(float amount);
 	virtual void DestroyMonster();
 	UFUNCTION()
 	void OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	// Health bar
+	UPROPERTY(VisibleAnywhere, Category = "Health Bar")
+	UWidgetComponent* HealthBar;
+	UTPSHealthBar* HealthBarWidget;
 };

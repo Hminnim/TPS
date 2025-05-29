@@ -201,7 +201,7 @@ void ATPSCharacter::Shoot(const FInputActionValue& Value)
 	bIsShoot = Value.Get<bool>();
 	if (bIsShoot)
 	{
-		CurrentWeapon->StartFire(Camera);
+		CurrentWeapon->StartFire();
 	}
 	else
 	{
@@ -217,7 +217,7 @@ void ATPSCharacter::EquipWeapon()
 		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, WeaponSocket);
 		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 		{
-			CurrentWeapon->SetController(PlayerController);
+			CurrentWeapon->SetPlayerComponent(PlayerController, Camera);
 		}
 		
 		if (GameMode)
