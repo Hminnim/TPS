@@ -50,7 +50,7 @@ void ATPSWeapon::Fire()
 	ATPSGameMode* GameMode = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
 	if (GameMode)
 	{
-		GameMode->UpdateAmmo(CurrentAmmo);
+		GameMode->UpdateAmmo(CurrentAmmo, MaxAmmo);
 	}
 	// Play fire sound
 	if (FireSound)
@@ -86,7 +86,7 @@ void ATPSWeapon::Reload()
 	ATPSGameMode* GameMode = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
 	if (GameMode)
 	{
-		GameMode->UpdateAmmo(CurrentAmmo);
+		GameMode->UpdateAmmo(CurrentAmmo, MaxAmmo);
 	}
 }
 

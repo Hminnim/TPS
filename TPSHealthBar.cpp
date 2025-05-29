@@ -3,8 +3,8 @@
 
 #include "TPSHealthBar.h"
 
-void UTPSHealthBar::SetHPBar(float curHP, float maxHP)
+void UTPSHealthBar::SetHPBar(float CurrentHP, float MaxHP)
 {
-	float HPRatio = curHP / maxHP;
+	float HPRatio = CurrentHP / MaxHP;
 	HealthPointBar->SetPercent(HPRatio);
 }

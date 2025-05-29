@@ -14,10 +14,11 @@
 
 ATPSSkyMonsterAI::ATPSSkyMonsterAI()
 {
+	// AI Peception component
 	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception"));
 	SetPerceptionComponent(*AIPerception);
 
-	// Sight Config
+	// Sight config
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightConfig"));
 	SightConfig->SightRadius = 800.0f;
 	SightConfig->LoseSightRadius = 1000.0f;
@@ -28,18 +29,20 @@ ATPSSkyMonsterAI::ATPSSkyMonsterAI()
 	AIPerception->ConfigureSense(*SightConfig);
 	AIPerception->SetDominantSense(SightConfig->GetSenseImplementation());
 
-	// Damage Config
+	// Damage config
 	DamageConfig = CreateDefaultSubobject<UAISenseConfig_Damage>(TEXT("DamageConfig"));
 
 	AIPerception->ConfigureSense(*DamageConfig);
 
-	// Binding
+	// AI Perception updated binding
 	AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &ATPSSkyMonsterAI::PerceptionUpdated);
 }
 
 void ATPSSkyMonsterAI::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+
+	// Monster team ID
 	SetGenericTeamId(FGenericTeamId(1));
 
 	UBlackboardComponent* bbComponent = Blackboard.Get();
@@ -67,6 +70,7 @@ void ATPSSkyMonsterAI::StopAI()
 	StopMovement();
 }
 
+// Any perception updated
 void ATPSSkyMonsterAI::PerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
 	if (Stimulus.WasSuccessfullySensed())

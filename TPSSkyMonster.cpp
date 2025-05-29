@@ -10,22 +10,24 @@
 
 ATPSSkyMonster::ATPSSkyMonster()
 {
+	// Set defalut values for SkyMonster
 	AttackRange = 500.0f;
 	MaxHealthPoint = 80.0f;
 	HealthPoint = 80.0f;
 }
 
-void ATPSSkyMonster::ShootMisile(FVector targetPosition)
+void ATPSSkyMonster::FireProjectile(FVector TargetPosition)
 {
 	if (ProjectileClass)
 	{
+		// Projectile will spawn at this socket location
 		FName SocketName = FName(TEXT("Voletir_BCanonEndSocket"));
 
 		if (GetMesh()->DoesSocketExist(SocketName))
 		{
-			FVector SocketLocation = GetMesh()->GetSocketLocation(SocketName);
-			FVector Direction = (targetPosition - SocketLocation).GetSafeNormal();
-			FRotator FireRotation = Direction.Rotation();
+			FVector SpawnLocation = GetMesh()->GetSocketLocation(SocketName);
+			FVector FireDirection = (TargetPosition - SpawnLocation).GetSafeNormal();
+			FRotator FireRotation = FireDirection.Rotation();
 
 			if (UWorld* World = GetWorld())
 			{
@@ -34,16 +36,16 @@ void ATPSSkyMonster::ShootMisile(FVector targetPosition)
 				SpawnParams.Instigator = GetInstigator();
 				SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-
-				ATPSMonsterProjectile* Projectile = World->SpawnActor<ATPSMonsterProjectile>(
+				ATPSMonsterProjectile* Projectile = World->SpawnActor<ATPSMonsterProjectile>
+				(
 					ProjectileClass,
-					SocketLocation,
+					SpawnLocation,
 					FireRotation,
 					SpawnParams
 				);
 				if (Projectile)
 				{
-					Projectile->FireInDirection(Direction);
+					Projectile->FireInDirection(FireDirection);
 				}
 			}
 		}

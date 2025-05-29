@@ -222,7 +222,7 @@ void ATPSCharacter::EquipWeapon()
 		
 		if (GameMode)
 		{
-			GameMode->SetAmmo(CurrentWeapon->CurrentAmmo, CurrentWeapon->MaxAmmo);
+			GameMode->UpdateAmmo(CurrentWeapon->CurrentAmmo, CurrentWeapon->MaxAmmo);
 		}
 	}
 }

@@ -22,11 +22,11 @@ void ATPSTitleGameMode::BeginPlay()
 	if (GameWidget)
 	{
 		GameWidget->AddToViewport();
-		APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-		if (PC)
+		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+		if (PlayerController)
 		{
-			PC->SetShowMouseCursor(true);
-			PC->SetInputMode(FInputModeUIOnly());
+			PlayerController->SetShowMouseCursor(true);
+			PlayerController->SetInputMode(FInputModeUIOnly());
 		}
 	}
 }

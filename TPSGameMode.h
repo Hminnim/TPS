@@ -20,11 +20,10 @@ class TPS_API ATPSGameMode : public AGameModeBase
 	GENERATED_BODY()
 	
 public:
-	// FUNCTION //
+	// Function
 	void SetWidget();
-	void SetAmmo(int32 currentAmmo, int32 maxAmmo);
-	void UpdateAmmo(int32 AmmoChange);
-	void UpdateCrosshair(bool isShow);
+	void UpdateAmmo(int32 CurrentAmmo, int32 MaxAmmo);
+	void UpdateCrosshair(bool bIsShow);
 	void UpdateScore(int32 scoreChange);
 	void UpdateTimer();
 	void StartTImer();
@@ -36,14 +35,13 @@ public:
 	void SetHealthBar(float MaxHealth, float CurrentHealth);
 
 protected:
-	int32 CurrentAmmo = 0;
-	int32 MaxAmmo = 0;
-	int32 CurrentScore = 0;
-	int32 CurrentTime = 120;
-
 	virtual void BeginPlay() override;
+	
+	// Game value
+	int32 CurrentScore = 0;
+	int32 CurrentTime = 120;	
 
-	// Widget //
+	// Widget
 	UPROPERTY(EditAnywhere, Category = "Widget")
 	TSubclassOf<class UUserWidget> GameWidgetClass;
 	UPROPERTY()
@@ -60,16 +58,12 @@ protected:
 	TSubclassOf<class UTPSOptionWidget> OptionWidgetClass;
 	UTPSOptionWidget* OptionWidget;
 
-	// Monster Spawner //
+	// Monster spawner
 	UPROPERTY(EditAnywhere, Category = "Monster Spawner")
 	TSubclassOf<class ATPSMonsterSpawner> MonsterSpawnerClass;
 	ATPSMonsterSpawner* MonsterSpawner;
 	void StartMonsterSpawn();
 
-	// Ammo //
-	void UpdateAmmoText();
-
 private:
 	FTimerHandle timerHandle;
-
 };

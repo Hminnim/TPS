@@ -9,6 +9,7 @@ bool UTPSGameOverWidget::Initialize()
 {
 	Super::Initialize();
 
+	// Bind funtion
 	if (RestartButton)
 	{
 		RestartButton->OnClicked.AddDynamic(this, &UTPSGameOverWidget::OnRestartButtonClicked);

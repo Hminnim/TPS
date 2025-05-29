@@ -16,11 +16,13 @@ bool UTPSOptionWidget::Initialize()
 
 	UGameUserSettings* Settings = GEngine->GetGameUserSettings();
 
+	// Fullscreen check box conifg
 	if (FullscreenCheckBox)
 	{
 		FullscreenCheckBox->SetIsChecked(Settings->GetFullscreenMode() == EWindowMode::Fullscreen);
 		FullscreenCheckBox->OnCheckStateChanged.AddDynamic(this, &UTPSOptionWidget::OnFullscreenCheckChanged);
 	}
+	// Resolution combo box config
 	if (ResolutionComboBox)
 	{
 		FIntPoint Resolution = Settings->GetScreenResolution();
@@ -33,6 +35,7 @@ bool UTPSOptionWidget::Initialize()
 		ResolutionComboBox->SetSelectedOption(CurrentResolution);
 		ResolutionComboBox->OnSelectionChanged.AddDynamic(this, &UTPSOptionWidget::OnResolutionChanged);
 	}
+	// Volumeslider config
 	if (VolumeSlider)
 	{
 		if (MasterSoundClass)
@@ -41,6 +44,7 @@ bool UTPSOptionWidget::Initialize()
 		}
 		VolumeSlider->OnValueChanged.AddDynamic(this, &UTPSOptionWidget::OnMasterVolumeChanged);
 	}
+	// Back button config
 	if (BackButton)
 	{
 		BackButton->OnClicked.AddDynamic(this, &UTPSOptionWidget::OnBackButtonClicked);
@@ -60,19 +64,24 @@ void UTPSOptionWidget::OnFullscreenCheckChanged(bool bIsChecked)
 
 void UTPSOptionWidget::OnResolutionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
+	// Combo box item split by "x"
 	TArray<FString> Split;
 	SelectedItem.ParseIntoArray(Split, TEXT("x"));
 
 	if (UGameUserSettings* Settings = GEngine->GetGameUserSettings())
 	{
-		FIntPoint NewResoltuion = { FCString::Atoi(*Split[0]), FCString::Atoi(*Split[1])};
+		int32 ResolutionWidth = FCString::Atoi(*Split[0]);
+		int32 ResolutionLength = FCString::Atoi(*Split[1]);
+		FIntPoint NewResoltuion = { ResolutionWidth, ResolutionLength};
+
 		Settings->SetScreenResolution(NewResoltuion);
-		Settings->ApplySettings(false);
 
 		if (Settings->GetFullscreenMode() == EWindowMode::Windowed)
 		{
 			GEngine->GameViewport->GetWindow()->Resize(NewResoltuion);
 		}
+
+		Settings->ApplySettings(false);
 	}
 }
 
@@ -84,11 +93,12 @@ void UTPSOptionWidget::OnMasterVolumeChanged(float Value)
 	}
 }
 
+// Close option widget
 void UTPSOptionWidget::OnBackButtonClicked()
 {
-	ATPSGameMode* GM = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
-	if (GM)
+	ATPSGameMode* GameMode = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
 	{
-		GM->CloseOption();
+		GameMode->CloseOption();
 	}
 }

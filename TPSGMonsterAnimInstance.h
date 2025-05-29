@@ -25,7 +25,7 @@ public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSecond) override;
 
-	// Value
+	// Monster values
 	UPROPERTY(BlueprintReadWrite)
 	float MonsterSpeed;
 	UPROPERTY(BlueprintReadWrite)

@@ -18,12 +18,11 @@ class TPS_API ATPSSkyMonsterAI : public AAIController
 
 public:
 	ATPSSkyMonsterAI();
+
+	// Function
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
 	void StopAI();
-
-protected:
-
 
 private:
 
@@ -33,7 +32,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI", meta = (AllowPrivateAccess = "true"));
 	TObjectPtr<class UBlackboardData> BB_Monster;
 
-	// AI Perception Component
+	// AI perception component
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"));
 	class UAIPerceptionComponent* AIPerception;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"));

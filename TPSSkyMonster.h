@@ -21,7 +21,7 @@ public:
 	FTimerHandle DeathTimer;
 
 	// FUNCTION //
-	void ShootMisile(FVector targetPosition);
+	void FireProjectile(FVector TargetPosition);
 	virtual void DestroyMonster() override;
 
 protected:

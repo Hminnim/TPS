@@ -19,5 +19,5 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UProgressBar* HealthPointBar;
 
-	void SetHPBar(float curHP, float maxHP);
+	void SetHPBar(float CurrentHP, float MaxHP);
 };

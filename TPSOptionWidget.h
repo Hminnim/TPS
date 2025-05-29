@@ -21,6 +21,7 @@ public:
 	class USoundClass* MasterSoundClass;
 
 protected:
+	// Bind widget
 	UPROPERTY(meta = (BindWidget))
 	class UCheckBox* FullscreenCheckBox;
 	UPROPERTY(meta = (BindWidget))
@@ -30,6 +31,7 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* BackButton;
 
+	// Widget class
 	UFUNCTION()
 	void OnFullscreenCheckChanged(bool bIsChecked);
 	UFUNCTION()

@@ -10,6 +10,7 @@ bool UTPS_PauseWidget::Initialize()
 {
 	Super::Initialize();
 
+	// Widget bind
 	if (OptionButton)
 	{
 		OptionButton->OnClicked.AddDynamic(this, &UTPS_PauseWidget::OnOptionButtonClicked);
@@ -26,25 +27,28 @@ bool UTPS_PauseWidget::Initialize()
 	return true;
 }
 
+// Open option widget
 void UTPS_PauseWidget::OnOptionButtonClicked()
 {
-	ATPSGameMode* GM = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
-	if (GM)
+	ATPSGameMode* GameMode = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
 	{
-		GM->OpenOption();
+		GameMode->OpenOption();
 	}
 }
 
+// Go to title menu
 void UTPS_PauseWidget::OnTitleButtonClicked()
 {
 	UGameplayStatics::OpenLevel(this, "Title");
 }
 
+// Close pause widget
 void UTPS_PauseWidget::OnBackButtonClicked()
 {
-	ATPSGameMode* GM = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
-	if (GM)
+	ATPSGameMode* GameMode = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
 	{
-		GM->GameResume();
+		GameMode->GameResume();
 	}
 }

@@ -18,6 +18,7 @@ public:
 	virtual bool Initialize() override;
 
 protected:
+	// Bind widget
 	UPROPERTY(meta = (BindWidget))
 	class UButton* OptionButton;
 	UPROPERTY(meta = (BindWidget))
@@ -26,6 +27,7 @@ protected:
 	class UButton* BackButton;
 
 private:
+	// Widget function
 	UFUNCTION()
 	void OnOptionButtonClicked();
 	UFUNCTION()

@@ -23,7 +23,6 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, Category = "Widget")
 	TSubclassOf<class UUserWidget> GameWidgetClass;
-
 	UPROPERTY()
 	UTPSTitleMenuWidget* GameWidget;
 

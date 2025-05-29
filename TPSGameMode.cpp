@@ -19,11 +19,6 @@ void ATPSGameMode::BeginPlay()
 	StartTImer();
 }
 
-void ATPSGameMode::UpdateAmmoText()
-{
-	GameWidget->SetAmmoText(CurrentAmmo, MaxAmmo);
-}
-
 void ATPSGameMode::SetWidget()
 {
 	if (GameWidgetClass)
@@ -34,37 +29,30 @@ void ATPSGameMode::SetWidget()
 		{
 			GameWidget->AddToViewport(0);
 			GameWidget->ShowCrosshair(false);
-			APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-			if (PC)
+
+			APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+			if (PlayerController)
 			{
-				PC->SetShowMouseCursor(false);
-				PC->SetInputMode(FInputModeGameOnly());
+				PlayerController->SetShowMouseCursor(false);
+				PlayerController->SetInputMode(FInputModeGameOnly());
 			}
 		}
 	}
 }
 
-void ATPSGameMode::SetAmmo(int32 currentAmmo, int32 maxAmmo)
+void ATPSGameMode::UpdateAmmo(int32 CurrentAmmo, int32 MaxAmmo)
 {
-	CurrentAmmo = currentAmmo;
-	MaxAmmo = maxAmmo;
-	UpdateAmmoText();
+	GameWidget->SetAmmoText(CurrentAmmo, MaxAmmo);
 }
 
-void ATPSGameMode::UpdateAmmo(int32 AmmoChange)
+void ATPSGameMode::UpdateCrosshair(bool bIsShow)
 {
-	CurrentAmmo = AmmoChange;
-	UpdateAmmoText();
+	GameWidget->ShowCrosshair(bIsShow);
 }
 
-void ATPSGameMode::UpdateCrosshair(bool isShow)
+void ATPSGameMode::UpdateScore(int32 Amount)
 {
-	GameWidget->ShowCrosshair(isShow);
-}
-
-void ATPSGameMode::UpdateScore(int32 scoreChange)
-{
-	CurrentScore += scoreChange;
+	CurrentScore += Amount;
 	GameWidget->SetScoreText(CurrentScore);
 }
 
@@ -111,6 +99,7 @@ void ATPSGameMode::StartMonsterSpawn()
 
 void ATPSGameMode::GameOver()
 {
+	// Open Gameover widget
 	if (GameoverWidgetClass && GameoverWidget == nullptr)
 	{
 		GameoverWidget = Cast<UTPSGameOverWidget>(CreateWidget(GetWorld(), GameoverWidgetClass));
@@ -120,18 +109,20 @@ void ATPSGameMode::GameOver()
 		GameoverWidget->AddToViewport(10);
 
 	}
-	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	if (PC)
+
+	// Change input mode to UI only
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PlayerController)
 	{
-		PC->SetShowMouseCursor(true);
-		PC->SetInputMode(FInputModeUIOnly());
+		PlayerController->SetShowMouseCursor(true);
+		PlayerController->SetInputMode(FInputModeUIOnly());
 	}
-	GetWorldSettings()->SetTimeDilation(0.f);
-	
+	GetWorldSettings()->SetTimeDilation(0.0f);
 }
 
 void ATPSGameMode::GamePause()
 {
+	// Open Gamepause widget
 	if (PauseWidgetClass && PauseWidget == nullptr)
 	{
 		PauseWidget = Cast<UTPS_PauseWidget>(CreateWidget(GetWorld(), PauseWidgetClass));
@@ -141,26 +132,30 @@ void ATPSGameMode::GamePause()
 		PauseWidget->AddToViewport(11);
 	}
 
-	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	if (PC)
+	// Change input mode to UI only
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PlayerController)
 	{
-		PC->SetShowMouseCursor(true);
-		PC->SetInputMode(FInputModeUIOnly());
+		PlayerController->SetShowMouseCursor(true);
+		PlayerController->SetInputMode(FInputModeUIOnly());
 	}
 	GetWorldSettings()->SetTimeDilation(0.f);
 }
 
 void ATPSGameMode::GameResume()
 {
+	// Close Gamepause widget
 	if (PauseWidget)
 	{
 		PauseWidget->RemoveFromParent();
 	}
-	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	if (PC)
+
+	// Change input mode to Game only
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PlayerController)
 	{
-		PC->SetShowMouseCursor(false);
-		PC->SetInputMode(FInputModeGameOnly());
+		PlayerController->SetShowMouseCursor(false);
+		PlayerController->SetInputMode(FInputModeGameOnly());
 	}
 	GetWorldSettings()->SetTimeDilation(1.f);
 }

@@ -15,14 +15,15 @@ class TPS_API UTPSUserWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-
-	void SetAmmoText(int32 currentAmmo, int32 maxAmmo);
-	void ShowCrosshair(bool isShow);
+	// Widget function
+	void SetAmmoText(int32 CurrentAmmo, int32 MaxAmmo);
+	void ShowCrosshair(bool bIsShow);
 	void SetScoreText(int32 CurrentScore);
 	void SetTimerText(int32 CurrentTime);
 	void SetHealthBar(float MaxHealth, float CurrentHealth);
 
 protected:
+	// Bind widget
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Score;
 	UPROPERTY(meta = (BindWidget))

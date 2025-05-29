@@ -18,12 +18,14 @@ public:
 	virtual bool Initialize() override;
 
 protected:
+	// Bind widget
 	UPROPERTY(meta = (BindWidget))
 	class UButton* RestartButton;
 	UPROPERTY(meta = (BindWidget))
 	class UButton* TitleButton;
 
 private:
+	// Widget function
 	UFUNCTION()
 	void OnRestartButtonClicked();
 	UFUNCTION()

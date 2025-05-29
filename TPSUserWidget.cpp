@@ -6,15 +6,15 @@
 #include "Components/Image.h"
 #include "Components/ProgressBar.h"
 
-void UTPSUserWidget::SetAmmoText(int32 currentAmmo, int32 maxAmmo)
+void UTPSUserWidget::SetAmmoText(int32 CurrentAmmo, int32 MaxAmmo)
 {
-	FString AmmoText = FString::Printf(TEXT("%d / %d"), currentAmmo, maxAmmo);
+	FString AmmoText = FString::Printf(TEXT("%d / %d"), CurrentAmmo, MaxAmmo);
 	Ammo->SetText(FText::FromString(AmmoText));
 }
 
-void UTPSUserWidget::ShowCrosshair(bool isShow)
+void UTPSUserWidget::ShowCrosshair(bool bIsShow)
 {
-	if (isShow)
+	if (bIsShow)
 	{
 		Crosshair->SetVisibility(ESlateVisibility::Visible);
 	}
@@ -36,6 +36,6 @@ void UTPSUserWidget::SetTimerText(int32 CurrentTime)
 
 void UTPSUserWidget::SetHealthBar(float MaxHealth, float CurrentHealth)
 {
-	float percent = CurrentHealth / MaxHealth;
-	HealthBar->SetPercent(percent);
+	float Ratio = CurrentHealth / MaxHealth;
+	HealthBar->SetPercent(Ratio);
 }

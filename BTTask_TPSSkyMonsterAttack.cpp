@@ -39,7 +39,7 @@ EBTNodeResult::Type UBTTask_TPSSkyMonsterAttack::ExecuteTask(UBehaviorTreeCompon
 		return EBTNodeResult::Failed;
 	}
 
-	AIMonster->ShootMisile(Target->GetActorLocation());
+	AIMonster->FireProjectile(Target->GetActorLocation());
 
 	return EBTNodeResult::Succeeded;
 }
