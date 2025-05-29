@@ -21,13 +21,13 @@ protected:
 	ATPSGroundMonster* Monster;
 
 public:
-	// FUNCTION //
+	// Function
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSecond) override;
 
-	// VALUES //
+	// Value
 	UPROPERTY(BlueprintReadWrite)
-	float speed;
+	float MonsterSpeed;
 	UPROPERTY(BlueprintReadWrite)
-	bool isDead;
+	bool bIsDead;
 };

@@ -12,7 +12,7 @@ ATPSMonsterProjectile::ATPSMonsterProjectile()
 		RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSceneCompoent"));
 	}
 
-	// Sphere Collision Component
+	// Sphere collision component
 	if (!CollisionComponent)
 	{
 		CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
@@ -22,7 +22,7 @@ ATPSMonsterProjectile::ATPSMonsterProjectile()
 		RootComponent = CollisionComponent;
 	}
 
-	// Projectile Movement Component
+	// Projectile movement component
 	if (!ProjectileMovementComponent)
 	{
 		ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjecttileMovementComponent"));
@@ -35,6 +35,7 @@ ATPSMonsterProjectile::ATPSMonsterProjectile()
 		ProjectileMovementComponent->ProjectileGravityScale = 0.0f;
 	}
 
+	// Projectile mesh component
 	if (!ProjectileMeshComponent)
 	{
 		ProjectileMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProjectileMeshComponent"));
@@ -55,6 +56,7 @@ ATPSMonsterProjectile::ATPSMonsterProjectile()
 		ProjectileMeshComponent->SetupAttachment(RootComponent);
 	}
 
+	// Explosion effect
 	if (!ExplosionEffect)
 	{
 		static ConstructorHelpers::FObjectFinder<UParticleSystem>Effect(TEXT("'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Big_A.P_Explosion_Big_A'"));
@@ -65,16 +67,21 @@ ATPSMonsterProjectile::ATPSMonsterProjectile()
 	}
 }
 
+// When any collisions
 void ATPSMonsterProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UGameplayStatics::SpawnEmitterAtLocation(
+	// Spawn explosion effect
+	UGameplayStatics::SpawnEmitterAtLocation
+	(
 		GetWorld(),
 		ExplosionEffect,
 		Hit.ImpactPoint,
 		Hit.ImpactPoint.Rotation()
 	);
 
-	UGameplayStatics::ApplyRadialDamage(
+	// Apply radius damge
+	UGameplayStatics::ApplyRadialDamage
+	(
 		GetWorld(),
 		ExplosionDamage,
 		GetActorLocation(),
@@ -86,6 +93,7 @@ void ATPSMonsterProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Oth
 		true
 	);
 
+	// Play explosion sound
 	if (ExplosionSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, ExplosionSound, GetActorLocation());

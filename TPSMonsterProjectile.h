@@ -19,28 +19,28 @@ class TPS_API ATPSMonsterProjectile : public AActor
 public:	
 	ATPSMonsterProjectile();
 
+	// Components
 	UPROPERTY(VisibleAnywhere, Category = "Projectile")
 	USphereComponent* CollisionComponent;
-	
 	UPROPERTY(VisibleAnywhere, Category = "Projectile")
 	UStaticMeshComponent* ProjectileMeshComponent;
-
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	UProjectileMovementComponent* ProjectileMovementComponent;
-
 	UMaterialInstanceDynamic* ProjectileMaterialInstance;
 
+	// Explosion
 	UPROPERTY(VisibleAnywhere, Category = "Effect")
 	UParticleSystem* ExplosionEffect;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explosion Sounds")
 	USoundBase* ExplosionSound;
 
+	// Function
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
 	void FireInDirection(const FVector& ShootDirection);
 
 protected:
+	// Values
 	float ExplosionRadius = 150.0f;
 	float ExplosionDamage = 10.0f;
 };

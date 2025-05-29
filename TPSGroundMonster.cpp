@@ -13,9 +13,9 @@ ATPSGroundMonster::ATPSGroundMonster()
 	HealthPoint = 150.0f;
 }
 
-void ATPSGroundMonster::MeleeAttack(AActor* target)
+void ATPSGroundMonster::MeleeAttack(AActor* Target)
 {
-	UGameplayStatics::ApplyDamage(target, AttackDamage,this->GetController(),this, UDamageType::StaticClass());
+	UGameplayStatics::ApplyDamage(Target, AttackDamage,this->GetController(),this, UDamageType::StaticClass());
 	if (AttackSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, AttackSound, GetActorLocation());
@@ -35,7 +35,8 @@ void ATPSGroundMonster::DestroyMonster()
 	
 	Super::DestroyMonster();
 
-	GetWorld()->GetTimerManager().SetTimer(
+	GetWorld()->GetTimerManager().SetTimer
+	(
 		DeathTimer,  
 		FTimerDelegate::CreateLambda([&]() {
 			this->Destroy();

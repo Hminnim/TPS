@@ -16,23 +16,23 @@ class TPS_API ATPSMonsterSpawner : public AActor
 public:	
 	ATPSMonsterSpawner();
 
-	// FUNCTION //
+	// Function
 	void StartSpawning();
 	void StopSpawning();
 
-	// VALUES //
-	int32 monstersCount;
-	float spawnPeriod;
+	// Value
+	int32 MonsterCount;
+	float SpawnPeriod;
 
 protected:
-	// FUNCTION //
+	// Function
 	void SpawnMonster();
 
-	// Monsters //
+	// For monsters
 	ATPSMonster* Monster;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monsters")
 	TArray<TSubclassOf<ATPSMonster>> MonsterClasses;
 
-	// VALUES //
+	// Value
 	FTimerHandle spawnTimerHandle;
 };

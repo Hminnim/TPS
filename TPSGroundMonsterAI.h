@@ -23,9 +23,6 @@ public:
 	virtual void OnUnPossess() override;
 	void StopAI();
 
-protected:
-
-
 private:
 
 	// BehaviorTree, BlackBoard
@@ -34,7 +31,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI", meta = (AllowPrivateAccess = "true"));
 	TObjectPtr<class UBlackboardData> BB_Monster;
 
-	// AI Perception Component
+	// AI perception component
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"));
 	class UAIPerceptionComponent* AIPerception;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"));
@@ -42,6 +39,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"));
 	class UAISenseConfig_Damage* DamageConfig;
 
+	// Binding function
 	UFUNCTION()
 	void PerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 };

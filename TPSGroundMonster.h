@@ -20,14 +20,14 @@ class TPS_API ATPSGroundMonster : public ATPSMonster
 public:
 	ATPSGroundMonster();
 
-	// VALUES //
+	// Values
 	FTimerHandle DeathTimer;
 
-	// FUNCTION //
-	void MeleeAttack(AActor* target);
+	// Function
+	void MeleeAttack(AActor* Target);
 	virtual void DestroyMonster() override;
 
-	// Sounds //
+	// Sounds
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Sounds")
 	USoundBase* AttackSound;
 
