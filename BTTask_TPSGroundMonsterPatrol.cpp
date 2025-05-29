@@ -14,6 +14,7 @@ EBTNodeResult::Type UBTTask_TPSGroundMonsterPatrol::ExecuteTask(UBehaviorTreeCom
 {
 	EBTNodeResult::Type SuperResult = Super::ExecuteTask(OwnerComp, NodeMemory);
 
+	// Exception handling
 	APawn* AIPawn = OwnerComp.GetAIOwner()->GetPawn();
 	if (AIPawn == nullptr)
 	{
@@ -30,9 +31,9 @@ EBTNodeResult::Type UBTTask_TPSGroundMonsterPatrol::ExecuteTask(UBehaviorTreeCom
 		return EBTNodeResult::Failed;
 	}
 
+	// Get random position
 	FVector HomePosition = OwnerComp.GetBlackboardComponent()->GetValueAsVector(TEXT("HomePosition"));
 	FNavLocation PatrolPosition;
-
 	if (NavSystem->GetRandomPointInNavigableRadius(HomePosition, 1000.0f, PatrolPosition))
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolPosition"), PatrolPosition);

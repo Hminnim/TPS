@@ -15,6 +15,7 @@ EBTNodeResult::Type UBTTask_TPSSkyMonsterAttack::ExecuteTask(UBehaviorTreeCompon
 {
 	EBTNodeResult::Type SuperResult = Super::ExecuteTask(OwnerComp, NodeMemory);
 
+	// Exception handling
 	APawn* AIPawn = OwnerComp.GetAIOwner()->GetPawn();
 	if (AIPawn == nullptr)
 	{

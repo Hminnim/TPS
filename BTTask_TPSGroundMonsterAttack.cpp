@@ -15,6 +15,7 @@ EBTNodeResult::Type UBTTask_TPSGroundMonsterAttack::ExecuteTask(UBehaviorTreeCom
 {
 	EBTNodeResult::Type SuperResult = Super::ExecuteTask(OwnerComp, NodeMemory);
 
+	// Exception handling
 	APawn* AIPawn = OwnerComp.GetAIOwner()->GetPawn();
 	if (AIPawn == nullptr)
 	{
@@ -39,9 +40,12 @@ EBTNodeResult::Type UBTTask_TPSGroundMonsterAttack::ExecuteTask(UBehaviorTreeCom
 		return EBTNodeResult::Failed;
 	}
 
-	double distance = FVector::Distance(AIPawn->GetActorLocation(), Target->GetActorLocation());
-
-	if (distance <= AIMonster->AttackRange) AIMonster->MeleeAttack(Target);
+	// Check distance between monster and player
+	double Distance = FVector::Distance(AIPawn->GetActorLocation(), Target->GetActorLocation());
+	if (Distance <= AIMonster->AttackRange)
+	{
+		AIMonster->MeleeAttack(Target);
+	}
 
 	return EBTNodeResult::Succeeded;
 }

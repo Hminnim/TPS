@@ -14,6 +14,7 @@ EBTNodeResult::Type UBTTask_TPSMonsterTurn::ExecuteTask(UBehaviorTreeComponent& 
 {
 	EBTNodeResult::Type SuperResult = Super::ExecuteTask(OwnerComp, NodeMemory);
 
+	// Exception handling
 	APawn* AIPawn = OwnerComp.GetAIOwner()->GetPawn();
 	if (AIPawn == nullptr)
 	{

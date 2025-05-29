@@ -14,6 +14,7 @@ void UBTService_TPSMonsterCheckRange::TickNode(UBehaviorTreeComponent& OwnerComp
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
+	// Exception handling
 	APawn* AIPawn = OwnerComp.GetAIOwner()->GetPawn();
 	if (AIPawn == nullptr)
 	{
@@ -38,9 +39,8 @@ void UBTService_TPSMonsterCheckRange::TickNode(UBehaviorTreeComponent& OwnerComp
 		return;
 	}
 
-	double distance = FVector::Distance(AIPawn->GetActorLocation(), Target->GetActorLocation());
-
-	if (distance <= AIMonster->AttackRange)
+	double Distance = FVector::Distance(AIPawn->GetActorLocation(), Target->GetActorLocation());
+	if (Distance <= AIMonster->AttackRange)
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool(TEXT("CanAttack"), true);
 		
